@@ -149,68 +149,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # postgres-product:
-  #   image: postgres:17
-  #   container_name: postgres-product
-  #   ports:
-  #     - "5433:5432"
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: product_service
-  #   command: postgres -c wal_level=logical
-  #   volumes:
-  #     - ./persea-product-service/pgdata:/var/lib/postgresql/data
-  #     - ./persea-product-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
-  #   networks:
-  #     - persea-net
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d product_service"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-
-  # postgres-user:
-  #   image: postgres:17
-  #   container_name: postgres-user
-  #   ports:
-  #     - "5434:5432"
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: user_service
-  #   command: postgres -c wal_level=logical
-  #   volumes:
-  #     - pgdata-user:/var/lib/postgresql/data
-  #     - ./persea-user-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
-  #   networks:
-  #     - persea-net
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d user_service"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-
-  # postgres-rec:
-  #   image: postgres:17
-  #   container_name: postgres-rec
-  #   ports:
-  #     - "5435:5432"
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: recommendation_service
-  #   volumes:
-  #     - pgdata-rec:/var/lib/postgresql/data
-  #     - ./persea-recommendation-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
-  #   networks:
-  #     - persea-net
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d recommendation_service"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-
   product-service:
     build:
       context: ./product-service
