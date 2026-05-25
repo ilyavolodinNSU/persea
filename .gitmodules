@@ -1,0 +1,9 @@
+[submodule "product-service"]
+	path = product-service
+	url = https://github.com/ilyavolodinNSU/persea-product-service.git
+[submodule "user-service"]
+	path = user-service
+	url = https://github.com/ilyavolodinNSU/persea-user-service.git
+[submodule "recommendation-service"]
+	path = recommendation-service
+	url = https://github.com/ilyavolodinNSU/persea-recommendation-service.git
