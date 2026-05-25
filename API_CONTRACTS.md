@@ -4,14 +4,14 @@
 
 **Микросервисы:**
 - `product-service` — `http://localhost:8084` — каталог продуктов, брендов, категорий, факторов
-- `user-service` — `http://localhost:8082` — действия пользователя, избранное
-- `recommendation-service` — `http://localhost:8085` — персональная лента
+- `user-service` — `http://localhost:8085` — действия пользователя, избранное
+- `recommendation-service` — `http://localhost:8086` — персональная лента
 
 **Аутентификация:**
 - OAuth2 Resource Server, JWT
 - Issuer: `http://localhost:8081/realms/persea`
 - Заголовок: `Authorization: Bearer <access_token>`
-- Роли: `APP_USER` (чтение), `APP_ADMIN` (запись)
+- Роли: `APP_USER` (чтение),`MODERATOR` (запись), `ADMIN` (удаление)
 
 ---
 
@@ -343,5 +343,3 @@
 8. Фронтенд: `GET /products?categoryId=1&minRating=80`
 9. Открыть карточку: `GET /products/101?include=FACTORS`
 10. Лента: `GET /recommendation/feed/me`
-
-Все примеры теперь соответствуют твоей Postman-коллекции.
