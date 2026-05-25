@@ -1,0 +1,492 @@
+{
+  "info": {
+    "name": "End-to-End Sync Test (Kafka CDC & Outbox) — FIXED",
+    "description": "Тестирование синхронизации между Product (8084), User (8085) и Recommendation (8086) сервисами",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "product_url",
+      "value": "http://localhost:8084",
+      "type": "string"
+    },
+    {
+      "key": "user_url",
+      "value": "http://localhost:8085",
+      "type": "string"
+    },
+    {
+      "key": "reco_url",
+      "value": "http://localhost:8086",
+      "type": "string"
+    },
+    {
+      "key": "cat_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brand_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Data Creation (Product CDC -> Reco/User)",
+      "item": [
+        {
+          "name": "1.1 [Product] Create Category",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Уникальное имя через timestamp, code всегда WATER — единственный поддерживаемый RatingCalculator",
+                  "pm.collectionVariables.set('cat_name', 'SyncCat_' + Date.now());"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function(){ pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set('cat_id', pm.response.json().id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{product_url}}/products/categories",
+              "host": ["{{product_url}}"],
+              "path": ["products", "categories"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{cat_name}}\",\n  \"code\": \"WATER\"\n}"
+            }
+          }
+        },
+        {
+          "name": "1.2 [Product] Create Brand",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.set('brand_name', 'SyncBrand_' + Date.now());"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function(){ pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set('brand_id', pm.response.json().id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{product_url}}/products/brands",
+              "host": ["{{product_url}}"],
+              "path": ["products", "brands"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{brand_name}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "1.3 [Product] Create Product",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.set('product_name', 'SyncProduct_' + Date.now());"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function(){ pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set('product_id', pm.response.json().id);",
+                  "// Ждём Kafka CDC: product -> user-service и rec-service",
+                  "var start = Date.now();",
+                  "while (Date.now() - start < 3000) {}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{product_url}}/products",
+              "host": ["{{product_url}}"],
+              "path": ["products"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{product_name}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://test.com/img.jpg\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Outbox Sync (Product View -> User & Reco)",
+      "item": [
+        {
+          "name": "2.1 [Product] View Product (Triggers Outbox)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', function(){ pm.response.to.have.status(200); });",
+                  "// Ждём: outbox -> Kafka -> user-service.syncAction()",
+                  "var start = Date.now();",
+                  "while (Date.now() - start < 10000) {}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{product_url}}/products/{{product_id}}?include=FACTORS",
+              "host": ["{{product_url}}"],
+              "path": ["products", "{{product_id}}"],
+              "query": [
+                {
+                  "key": "include",
+                  "value": "FACTORS"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2.2 [User] Verify Product in Viewed History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', function(){ pm.response.to.have.status(200); });",
+                  "var prodId = parseInt(pm.collectionVariables.get('product_id'));",
+                  "var body = pm.response.json();",
+                  "pm.test('Продукт есть в истории просмотров', function(){",
+                  "    var found = body.some(function(p){ return p.id === prodId; });",
+                  "    pm.expect(found).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{user_url}}/users/me/viewed-products",
+              "host": ["{{user_url}}"],
+              "path": ["users", "me", "viewed-products"]
+            }
+          }
+        },
+        {
+          "name": "2.3 [Recommendation] Recalculate Feeds (After View)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 202 Accepted', function(){ pm.response.to.have.status(202); });",
+                  "// Ждём завершения асинхронной джобы (CompletableFuture.runAsync)",
+                  "var start = Date.now();",
+                  "while (Date.now() - start < 7000) {}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{reco_url}}/recommendation/recalculate",
+              "host": ["{{reco_url}}"],
+              "path": ["recommendation", "recalculate"]
+            }
+          }
+        },
+        {
+          "name": "2.4 [Recommendation] Get My Feed (After View)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', function(){ pm.response.to.have.status(200); });",
+                  "var feed = pm.response.json();",
+                  "pm.test('Ответ является массивом', function(){",
+                  "    pm.expect(Array.isArray(feed)).to.be.true;",
+                  "});",
+                  "if (feed.length > 0) {",
+                  "    console.log('Лента после просмотра: ' + feed.length + ' элементов');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{reco_url}}/recommendation/feed/me",
+              "host": ["{{reco_url}}"],
+              "path": ["recommendation", "feed", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. User Action Sync (User CDC -> Reco)",
+      "item": [
+        {
+          "name": "3.1 [User] Add to Favorites",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', function(){ pm.response.to.have.status(204); });",
+                  "// Ждём CDC: user_actions -> rec-service",
+                  "var start = Date.now();",
+                  "while (Date.now() - start < 3000) {}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{user_url}}/users/me/favorites/{{product_id}}",
+              "host": ["{{user_url}}"],
+              "path": ["users", "me", "favorites", "{{product_id}}"]
+            }
+          }
+        },
+        {
+          "name": "3.2 [Recommendation] Recalculate Feeds",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 202 Accepted', function(){ pm.response.to.have.status(202); });",
+                  "// Ждём завершения асинхронной джобы",
+                  "var start = Date.now();",
+                  "while (Date.now() - start < 7000) {}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{reco_url}}/recommendation/recalculate",
+              "host": ["{{reco_url}}"],
+              "path": ["recommendation", "recalculate"]
+            }
+          }
+        },
+        {
+          "name": "3.3 [Recommendation] Get My Feed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', function(){ pm.response.to.have.status(200); });",
+                  "var feed = pm.response.json();",
+                  "pm.test('Ответ является массивом', function(){",
+                  "    pm.expect(Array.isArray(feed)).to.be.true;",
+                  "});",
+                  "if (feed.length > 0) {",
+                  "    console.log('Лента после like: ' + feed.length + ' элементов');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{reco_url}}/recommendation/feed/me",
+              "host": ["{{reco_url}}"],
+              "path": ["recommendation", "feed", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Delete Flow (Product CDC Delete -> User & Reco)",
+      "item": [
+        {
+          "name": "4.1 [Product] Delete Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', function(){ pm.response.to.have.status(204); });",
+                  "// Ждём CDC: delete product -> user-service и rec-service",
+                  "var start = Date.now();",
+                  "while (Date.now() - start < 10000) {}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{product_url}}/products/{{product_id}}",
+              "host": ["{{product_url}}"],
+              "path": ["products", "{{product_id}}"]
+            }
+          }
+        },
+        {
+          "name": "4.2 [User] Verify Product Removed from Viewed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', function(){ pm.response.to.have.status(200); });",
+                  "var prodId = parseInt(pm.collectionVariables.get('product_id'));",
+                  "var body = pm.response.json();",
+                  "pm.test('Удалённый продукт отсутствует в истории просмотров', function(){",
+                  "    var found = body.some(function(p){ return p.id === prodId; });",
+                  "    pm.expect(found).to.be.false;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{user_url}}/users/me/viewed-products",
+              "host": ["{{user_url}}"],
+              "path": ["users", "me", "viewed-products"]
+            }
+          }
+        },
+        {
+          "name": "4.3 [Product] Delete Brand",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', function(){ pm.response.to.have.status(204); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{product_url}}/products/brands/{{brand_id}}",
+              "host": ["{{product_url}}"],
+              "path": ["products", "brands", "{{brand_id}}"]
+            }
+          }
+        },
+        {
+          "name": "4.4 [Product] Delete Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', function(){ pm.response.to.have.status(204); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{product_url}}/products/categories/{{cat_id}}",
+              "host": ["{{product_url}}"],
+              "path": ["products", "categories", "{{cat_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

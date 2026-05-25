@@ -1,0 +1,19 @@
+{
+  "name": "product-outbox-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "plugin.name": "pgoutput",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgres",
+    "database.dbname": "product_service",
+    "topic.prefix": "data.cdc",
+    "table.include.list": "public.outbox",
+    "transforms": "outbox",
+    "transforms.outbox.type": "io.debezium.transforms.outbox.EventRouter",
+    "transforms.outbox.route.topic.replacement": "data.cdc.${routedByValue}.outbox",
+    "heartbeat.interval.ms": "5000",
+    "slot.name": "product_service_slot_outbox"
+  }
+}

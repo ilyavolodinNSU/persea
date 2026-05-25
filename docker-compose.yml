@@ -1,0 +1,273 @@
+name: persea
+
+services:
+
+  # ─── Keycloak ────────────────────────────────────────────────────────────────
+  auth-service:
+    image: quay.io/keycloak/keycloak:26.5
+    container_name: auth-service
+    command: start-dev
+    ports:
+      - "8081:8080"
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres-keycloak
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak_secret
+      KC_HOSTNAME: localhost
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    depends_on:
+      postgres-keycloak:
+        condition: service_healthy
+    networks:
+      - persea-net
+
+  postgres-keycloak:
+    image: postgres:17
+    container_name: postgres-keycloak
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak_secret
+    volumes:
+      - pgdata-keycloak:/var/lib/postgresql/data
+    networks:
+      - persea-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Kafka + Connect ─────────────────────────────────────────────────────────
+  kafka:
+    image: quay.io/debezium/kafka:3.5
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      CLUSTER_ID: oh-sxaDRTcyAr6pFRbXyzA
+      NODE_ID: 1
+      NODE_ROLE: combined
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9094,CONTROLLER://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+    networks:
+      - persea-net
+
+  kafka-connect:
+    image: quay.io/debezium/connect:3.5
+    container_name: kafka-connect
+    ports:
+      - "8083:8083"
+    depends_on:
+      kafka:
+        condition: service_started
+      postgres-product:
+        condition: service_healthy
+      postgres-user:
+        condition: service_healthy
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: my_connect_configs
+      OFFSET_STORAGE_TOPIC: my_connect_offsets
+      STATUS_STORAGE_TOPIC: my_connect_statuses
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/connectors"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    networks:
+      - persea-net
+
+  connect-init:
+    image: curlimages/curl:latest
+    container_name: connect-init
+    volumes:
+      - ./persea-product-service/debezium/product-connector-config.json:/product-connector-config.json
+      - ./persea-product-service/debezium/product-outbox-connector-config.json:/product-outbox-connector-config.json
+      - ./persea-product-service/debezium/user-action-connector-config.json:/user-action-connector-config.json
+      - ./persea-product-service/debezium/init-connectors.sh:/init-connectors.sh
+    depends_on:
+      kafka-connect:
+        condition: service_healthy
+    command: sh /init-connectors.sh
+    restart: on-failure
+    networks:
+      - persea-net
+
+  # ─── Redis ───────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:8.6
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - persea-net
+
+  # ─── Elasticsearch ───────────────────────────────────────────────────────────
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    networks:
+      - persea-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -qE '\"status\":\"(green|yellow)\"'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  # ─── Databases ───────────────────────────────────────────────────────────────
+  postgres-product:
+    image: postgres:17
+    container_name: postgres-product
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: product_service
+    command: postgres -c wal_level=logical
+    volumes:
+      - ./persea-product-service/pgdata:/var/lib/postgresql/data
+      - ./persea-product-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    networks:
+      - persea-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d product_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-user:
+    image: postgres:17
+    container_name: postgres-user
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: user_service
+    command: postgres -c wal_level=logical
+    volumes:
+      - pgdata-user:/var/lib/postgresql/data
+      - ./persea-user-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    networks:
+      - persea-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-rec:
+    image: postgres:17
+    container_name: postgres-rec
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: recommendation_service
+    volumes:
+      - pgdata-rec:/var/lib/postgresql/data
+      - ./persea-recommendation-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    networks:
+      - persea-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d recommendation_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Application Services ────────────────────────────────────────────────────
+  product-service:
+    build:
+      context: ./persea-product-service
+      dockerfile: Dockerfile
+    container_name: product-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      postgres-product:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - persea-net
+    restart: on-failure
+
+  user-service:
+    build:
+      context: ./persea-user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      postgres-user:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      auth-service:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - persea-net
+    restart: on-failure
+
+  recommendation-service:
+    build:
+      context: ./persea-recommendation-service
+      dockerfile: Dockerfile
+    container_name: recommendation-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      postgres-rec:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      redis:
+        condition: service_started
+      auth-service:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - persea-net
+    restart: on-failure
+
+volumes:
+  pgdata-keycloak:
+  pgdata-user:
+  pgdata-rec:
+
+networks:
+  persea-net:
+    driver: bridge

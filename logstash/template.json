@@ -1,0 +1,12 @@
+{
+  "index_patterns": ["products*"],
+  "template": {
+    "mappings": {
+      "properties": {
+        "name_suggest": {
+          "type": "completion"
+        }
+      }
+    }
+  }
+}
