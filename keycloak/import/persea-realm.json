@@ -433,6 +433,50 @@
       ]
     }
   },
+  "users": [
+    {
+      "username": "test_user",
+      "enabled": true,
+      "email": "user@persea.ru",
+      "emailVerified": true,
+      "firstName": "User",
+      "lastName": "User",
+      "credentials": [{
+        "type": "password",
+        "value": "user",
+        "temporary": false
+      }],
+      "realmRoles": ["app_user"]
+    },
+    {
+      "username": "test_moderator",
+      "enabled": true,
+      "email": "moderator@persea.ru",
+      "emailVerified": true,
+      "firstName": "Moderator",
+      "lastName": "Moderator",
+      "credentials": [{
+        "type": "password",
+        "value": "moderator",
+        "temporary": false
+      }],
+      "realmRoles": ["moderator"]
+    },
+    {
+      "username": "test_admin",
+      "enabled": true,
+      "email": "admin@persea.ru",
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "Admin",
+      "credentials": [{
+        "type": "password",
+        "value": "admin",
+        "temporary": false
+      }],
+      "realmRoles": ["admin"]
+    }
+  ],
   "groups": [],
   "defaultRole": {
     "id": "79d2c2e8-3c65-4ff4-b3cd-f6e63f54db3e",
