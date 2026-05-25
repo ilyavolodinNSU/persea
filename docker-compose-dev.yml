@@ -1,0 +1,212 @@
+services:
+
+  auth-service:
+    image: quay.io/keycloak/keycloak:26.5
+    container_name: auth-service
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8081:8080"
+    environment:
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres-keycloak
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak_secret
+      KC_HOSTNAME: localhost
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import:ro
+    depends_on:
+      postgres-keycloak:
+        condition: service_healthy
+    networks:
+      - persea-net
+
+  postgres-keycloak:
+    image: postgres:17
+    container_name: postgres-keycloak
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak_secret
+    volumes:
+      - pgdata-keycloak:/var/lib/postgresql/data
+    networks:
+      - persea-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak -d keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=product_service
+    command: postgres -c wal_level=logical
+    volumes:
+      - pgdata-services:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d
+    networks:
+      - persea-net
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres -d product_service"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 20s
+
+  kafka:
+    image: quay.io/debezium/kafka:3.5
+    container_name: kafka
+    ports:
+      - 9092:9092
+      - 9093:9093
+      - 9094:9094
+    environment:
+      - CLUSTER_ID=oh-sxaDRTcyAr6pFRbXyzA
+      - NODE_ID=1
+      - NODE_ROLE=combined
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_LISTENERS=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9094,CONTROLLER://kafka:9093
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+    networks:
+      - persea-net
+
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   container_name: kafka-ui
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - kafka
+  #   environment:
+  #     - KAFKA_CLUSTERS_0_NAME=local
+  #     - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+  #   networks:
+  #     - persea-net
+
+  kafka-connect:
+    image: quay.io/debezium/connect:3.5
+    container_name: kafka-connect
+    ports:
+     - 8083:8083
+    depends_on:
+      kafka:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    environment:
+     - BOOTSTRAP_SERVERS=kafka:9092
+     - GROUP_ID=1
+     - CONFIG_STORAGE_TOPIC=my_connect_configs
+     - OFFSET_STORAGE_TOPIC=my_connect_offsets
+     - STATUS_STORAGE_TOPIC=my_connect_statuses
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/connectors"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - persea-net
+
+  connect-init:
+    image: curlimages/curl:latest
+    container_name: connect-init
+    volumes:
+      - ./debezium/product-connector-config.json:/product-connector-config.json
+      - ./debezium/product-outbox-connector-config.json:/product-outbox-connector-config.json
+      - ./debezium/user-action-connector-config.json:/user-action-connector-config.json
+      - ./debezium/init-connectors.sh:/init-connectors.sh
+    depends_on:
+      kafka-connect:
+        condition: service_healthy
+    command: sh /init-connectors.sh
+    restart: on-failure
+    networks:
+      - persea-net
+
+  redis:
+    image: redis:8.6
+    ports:
+      - "6379:6379"
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.2
+    container_name: es
+    environment:
+      - discovery.type=single-node
+      - node.name=es01a
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - persea-net
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl --output /dev/null --silent --head --fail http://es:9200",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  # kib:
+  #   image: docker.elastic.co/kibana/kibana:9.3.2
+  #   container_name: kib
+  #   ports:
+  #     - 5601:5601
+  #   environment:
+  #     - ELASTICSEARCH_HOSTS=http://es:9200
+  #   depends_on:
+  #     - es
+  #   networks:
+  #     - persea-net
+
+  ls:
+    image: docker.elastic.co/logstash/logstash:9.3.2
+    container_name: ls
+    ports:
+      - 5044:5044
+    depends_on:
+      - postgres
+      - es
+    volumes:
+      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./lsdata:/usr/share/logstash/data
+      - ./logstash/postgresql-42.7.10.jar:/usr/share/logstash/postgresql-42.7.10.jar
+      - ./logstash/template.json:/usr/share/logstash/template.json
+    networks:
+      - persea-net
+
+volumes:
+  pgdata-keycloak:
+  pgdata-services:
+
+networks:
+  persea-net:
+    driver: bridge

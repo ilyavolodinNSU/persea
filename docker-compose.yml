@@ -2,7 +2,6 @@ name: persea
 
 services:
 
-  # ─── Keycloak ────────────────────────────────────────────────────────────────
   auth-service:
     image: quay.io/keycloak/keycloak:26.5
     container_name: auth-service
@@ -43,7 +42,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ─── Kafka + Connect ─────────────────────────────────────────────────────────
   kafka:
     image: quay.io/debezium/kafka:3.5
     container_name: kafka
@@ -71,9 +69,7 @@ services:
     depends_on:
       kafka:
         condition: service_started
-      postgres-product:
-        condition: service_healthy
-      postgres-user:
+      postgres:
         condition: service_healthy
     environment:
       BOOTSTRAP_SERVERS: kafka:9092
@@ -94,10 +90,10 @@ services:
     image: curlimages/curl:latest
     container_name: connect-init
     volumes:
-      - ./persea-product-service/debezium/product-connector-config.json:/product-connector-config.json
-      - ./persea-product-service/debezium/product-outbox-connector-config.json:/product-outbox-connector-config.json
-      - ./persea-product-service/debezium/user-action-connector-config.json:/user-action-connector-config.json
-      - ./persea-product-service/debezium/init-connectors.sh:/init-connectors.sh
+      - ./debezium/product-connector-config.json:/product-connector-config.json
+      - ./debezium/product-outbox-connector-config.json:/product-outbox-connector-config.json
+      - ./debezium/user-action-connector-config.json:/user-action-connector-config.json
+      - ./debezium/init-connectors.sh:/init-connectors.sh
     depends_on:
       kafka-connect:
         condition: service_healthy
@@ -106,7 +102,6 @@ services:
     networks:
       - persea-net
 
-  # ─── Redis ───────────────────────────────────────────────────────────────────
   redis:
     image: redis:8.6
     container_name: redis
@@ -115,7 +110,6 @@ services:
     networks:
       - persea-net
 
-  # ─── Elasticsearch ───────────────────────────────────────────────────────────
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
     container_name: elasticsearch
@@ -135,79 +129,97 @@ services:
       retries: 10
       start_period: 40s
 
-  # ─── Databases ───────────────────────────────────────────────────────────────
-  postgres-product:
+  postgres:
     image: postgres:17
-    container_name: postgres-product
+    container_name: postgres
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: product_service
     command: postgres -c wal_level=logical
     volumes:
-      - ./persea-product-service/pgdata:/var/lib/postgresql/data
-      - ./persea-product-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d
     networks:
       - persea-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d product_service"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  postgres-user:
-    image: postgres:17
-    container_name: postgres-user
-    ports:
-      - "5434:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: user_service
-    command: postgres -c wal_level=logical
-    volumes:
-      - pgdata-user:/var/lib/postgresql/data
-      - ./persea-user-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
-    networks:
-      - persea-net
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d user_service"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # postgres-product:
+  #   image: postgres:17
+  #   container_name: postgres-product
+  #   ports:
+  #     - "5433:5432"
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: product_service
+  #   command: postgres -c wal_level=logical
+  #   volumes:
+  #     - ./persea-product-service/pgdata:/var/lib/postgresql/data
+  #     - ./persea-product-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+  #   networks:
+  #     - persea-net
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d product_service"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
-  postgres-rec:
-    image: postgres:17
-    container_name: postgres-rec
-    ports:
-      - "5435:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: recommendation_service
-    volumes:
-      - pgdata-rec:/var/lib/postgresql/data
-      - ./persea-recommendation-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
-    networks:
-      - persea-net
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d recommendation_service"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # postgres-user:
+  #   image: postgres:17
+  #   container_name: postgres-user
+  #   ports:
+  #     - "5434:5432"
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: user_service
+  #   command: postgres -c wal_level=logical
+  #   volumes:
+  #     - pgdata-user:/var/lib/postgresql/data
+  #     - ./persea-user-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+  #   networks:
+  #     - persea-net
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d user_service"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
-  # ─── Application Services ────────────────────────────────────────────────────
+  # postgres-rec:
+  #   image: postgres:17
+  #   container_name: postgres-rec
+  #   ports:
+  #     - "5435:5432"
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: recommendation_service
+  #   volumes:
+  #     - pgdata-rec:/var/lib/postgresql/data
+  #     - ./persea-recommendation-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+  #   networks:
+  #     - persea-net
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d recommendation_service"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
   product-service:
     build:
-      context: ./persea-product-service
+      context: ./product-service
       dockerfile: Dockerfile
     container_name: product-service
     ports:
       - "8084:8084"
     depends_on:
-      postgres-product:
+      postgres:
         condition: service_healthy
       kafka:
         condition: service_started
@@ -223,13 +235,13 @@ services:
 
   user-service:
     build:
-      context: ./persea-user-service
+      context: ./user-service
       dockerfile: Dockerfile
     container_name: user-service
     ports:
       - "8085:8085"
     depends_on:
-      postgres-user:
+      postgres:
         condition: service_healthy
       kafka:
         condition: service_started
@@ -243,13 +255,13 @@ services:
 
   recommendation-service:
     build:
-      context: ./persea-recommendation-service
+      context: ./recommendation-service
       dockerfile: Dockerfile
     container_name: recommendation-service
     ports:
       - "8086:8086"
     depends_on:
-      postgres-rec:
+      postgres:
         condition: service_healthy
       kafka:
         condition: service_started
@@ -265,8 +277,7 @@ services:
 
 volumes:
   pgdata-keycloak:
-  pgdata-user:
-  pgdata-rec:
+  pgdata:
 
 networks:
   persea-net:
