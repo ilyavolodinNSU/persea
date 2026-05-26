@@ -1,119 +1,87 @@
-# Запуск проекта Persea
+## Запуск проекта
 
-Инструкция по локальному развёртыванию для разработки.
+В проекте предусмотрено два варианта запуска с помощью Docker Compose:
 
-## Предварительные требования
-
-- Docker и Docker Compose
-- JDK 21
-- Postman
-- Git
-
-## 1. Клонирование репозитория
-
+### Вариант 1: Полный запуск (Production/Test-like)
+Запускает всю инфраструктуру и микросервисы (собираются из исходников).
+`ЕСЛИ ПАДАЕТ С ОШИБКОЙ ТО ОТКЛЮЧИТЬ ВПН!`
+```bash
+docker compose up -d --build
 ```
-git clone <repo-url>
-cd persea
-git submodule update --init --recursive
-```
+*Примечание: Микросервисы маршрутизируются через единый контейнер `localhost`. Приложения будут доступны на портах 8084, 8085, 8086.*
 
-## 2. Запуск инфраструктуры
-
-Из корня проекта:
-
-```
+### Вариант 2: Среда разработки (Infra only)
+Запускает **только инфраструктуру** (Базы данных, Kafka, Keycloak, ELK). Микросервисы вы запускаете локально через вашу IDE.
+```bash
 docker compose -f docker-compose-dev.yml up -d
 ```
-
-Поднимаются: PostgreSQL для сервисов, PostgreSQL для Keycloak, Keycloak, Kafka, Kafka Connect, Debezium коннекторы, Redis, Elasticsearch, Logstash.
-
-Дождаться, пока все контейнеры будут в статусе healthy. Проверить:
-
-```
-docker ps
-```
-
-Контейнер `connect-init` должен завершиться с кодом 0 после регистрации коннекторов.
-
-## 3. Запуск сервисов
-
-Каждый сервис запускается отдельно из своей директории:
-
-```
-cd <service-name>
+Запуск сервисов по отдельности в корне каждого:
+```bash
 ./gradlew bootRun
 ```
+*Примечание: В dev-режиме порты проброшены напрямую на хост (например, основная БД Postgres доступна на порту 5433).*
 
-Сервисы поднимаются на портах, указанных в их `application.yml`.
+---
 
-## 4. Настройка Postman
+## Аутентификация и пользователи (Keycloak)
 
-### 4.1. Импорт коллекций
+Keycloak автоматически импортирует настройки `realm` при старте. 
 
-В Postman выполнить File → Import и выбрать все файлы из папки `postman/` в корне репозитория.
+* **Admin Console:** http://localhost:8080
+* **Admin Login/Password:** `admin` / `admin`
 
-### 4.2. Регистрация пользователя
+### Тестовые пользователи
 
-Открыть в браузере страницу логина Keycloak:
+В системе предустановлены следующие пользователи:
 
-```
-http://localhost:8081/realms/persea/account
-```
+| Username | Email | Password | Роль |
+| :--- | :--- | :--- | :--- |
+| `test_user` | test_user@persea.local | `user1234` | `app_user` (default) |
+| `test_moderator` | test_moderator@persea.local | `moder1234` | `moderator` |
+| `test_admin` | test_admin@persea.local | `admin1234` | `admin` |
 
-Нажать Register, заполнить форму, подтвердить email (для разработки письма ловятся через Mailpit, либо подтвердить вручную в админке Keycloak).
+### Как получить Access Token (через Postman)
 
-Альтернативно регистрацию можно выполнить через Postman, используя соответствующий запрос из импортированной коллекции.
+Так как для клиента `android-app` отключен Direct Access Grant (передача логина/пароля напрямую), необходимо использовать **Authorization Code Flow с PKCE**.
 
-### 4.3. Получение токена
+В Postman создайте новый Request, перейдите во вкладку **Authorization** и настройте её следующим образом:
 
-В Postman открыть любую коллекцию, перейти в Authorization → OAuth 2.0 → Get New Access Token. Использовать настройки, заранее сохранённые в коллекции (Authorization Code with PKCE, client_id `android-app`).
+1. **Type:** `OAuth 2.0`
+2. **Add authorization data to:** `Request Headers`
+3. В разделе **Configure New Token**:
+   * **Token Name:** `Persea Token` (любое имя)
+   * **Grant Type:** `Authorization Code`
+   * **Callback URL:** `https://oauth.pstmn.io/v1/callback` *(убедитесь, что галочка "Authorize using browser" **снята**)*
+   * **Auth URL:** `http://localhost:8080/realms/persea/protocol/openid-connect/auth`
+   * **Access Token URL:** `http://localhost:8080/realms/persea/protocol/openid-connect/token`
+   * **Client ID:** `android-app`
+   * **Client Secret:** *(оставить пустым, так как publicClient: true)*
+   * **Code Challenge Method:** `SHA-256`
+   * **Scope:** `openid profile email`
 
-После успешного логина в браузере токен сохранится в Postman.
+4. Нажмите кнопку **Get New Access Token**.
+5. Откроется встроенное окно браузера Postman. Введите логин и пароль одного из тестовых пользователей (например, `test_admin` / `admin1234`).
+6. После успешного входа Postman получит токен. Нажмите **Use Token**.
 
-## 5. Назначение роли администратора
+---
 
-По умолчанию новый пользователь получает роль `APP_USER`. Чтобы выдать роль `ADMIN`:
+## Инфраструктура и порты
 
-1. Открыть админку Keycloak: `http://localhost:8081`
-2. Войти под `admin / admin`
-3. Переключиться на realm `persea`
-4. Users → найти своего пользователя → Role mapping → Assign role
-5. Выбрать `ADMIN` и подтвердить
+### Микросервисы (только при полном запуске)
+| Сервис | Порт (localhost) | Описание |
+| :--- | :--- | :--- |
+| `product-service` | `8084` | Управление каталогом продуктов |
+| `user-service` | `8085` | Управление профилями пользователей |
+| `recommendation-service`| `8086` | Выдача рекомендаций (использует Redis) |
 
-После изменения ролей в Postman нужно **получить новый токен** (старый содержит прежние роли). Снова выполнить Get New Access Token.
-
-## 6. Работа с API
-
-Использовать импортированные коллекции из папки `postman/`. Токен подставляется автоматически из настроек OAuth 2.0 коллекции.
-
-При истечении токена или ошибке `invalid_grant` получить новый токен через Get New Access Token, а не через кнопку refresh (в realm включён Refresh Token Rotation, refresh токен одноразовый).
-
-## 7. Остановка
-
-Остановить контейнеры без удаления данных:
-
-```
-docker compose -f docker-compose-dev.yml down
-```
-
-Полная очистка с удалением volume (БД, сессии Keycloak, индексы Elasticsearch):
-
-```
-docker compose -f docker-compose-dev.yml down -v
-```
-
-После `down -v` при следующем запуске realm Keycloak импортируется заново из `keycloak/import/persea-realm.json`, всех зарегистрированных пользователей нужно создавать заново.
-
-## Возможные проблемы
-
-**Elasticsearch не стартует, статус unhealthy.** Проверить `docker logs es`. Чаще всего причина — низкий `vm.max_map_count` (см. предварительные требования) или права на папку `./esdata`:
-
-```
-sudo chown -R 1000:1000 ./esdata ./lsdata
-```
-
-**connect-init падает с 409 Conflict.** Коннекторы уже зарегистрированы в Kafka Connect от прошлого запуска. Если данные в БД актуальны — игнорировать. Для полной переинициализации сделать `down -v`.
-
-**Postman возвращает Invalid refresh token.** Включён Refresh Token Rotation, токен одноразовый. Получить новый через Get New Access Token.
-
-**Сервис не подключается к Keycloak / Postgres / Kafka.** Убедиться, что в `application.yml` сервиса хосты указаны как `localhost` (если сервис запускается через `./gradlew bootRun` на хосте), а не как имена контейнеров.
+### Инфраструктура
+| Сервис | Порт (Dev-режим) | Описание |
+| :--- | :--- | :--- |
+| **Keycloak** | `8080` | IAM сервер |
+| **Postgres (Services)** | `5433` (в dev) / `5432` | Основная БД для микросервисов (wal_level=logical) |
+| **Postgres (Keycloak)** | `5432` (в dev) | БД для самого Keycloak |
+| **Kafka** | `9094` | Брокер сообщений |
+| **Kafka Connect** | `8083` | Debezium CDC |
+| **Redis** | `6379` | Кэш / БД для рекомендаций |
+| **Elasticsearch** | `9200` | Поисковый движок |
+| **Logstash** | `5044` (только в dev) | Пайплайны для синхронизации Postgres -> ES |
