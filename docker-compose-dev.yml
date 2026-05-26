@@ -159,7 +159,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
@@ -196,13 +196,15 @@ services:
       - es
     volumes:
       - ./logstash/pipeline/:/usr/share/logstash/pipeline/
-      - ./lsdata:/usr/share/logstash/data
+      - lsdata:/usr/share/logstash/data
       - ./logstash/postgresql-42.7.10.jar:/usr/share/logstash/postgresql-42.7.10.jar
       - ./logstash/template.json:/usr/share/logstash/template.json
     networks:
       - persea-net
 
 volumes:
+  esdata:
+  lsdata:
   pgdata-keycloak:
   pgdata-services:
 

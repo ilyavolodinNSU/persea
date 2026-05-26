@@ -2,18 +2,24 @@ name: persea
 
 services:
 
+  localhost:
+    image: alpine:latest
+    command: sleep infinity
+    ports:
+      - "8080:8080"   # Keycloak
+      - "8084:8084"   # product-service
+      - "8085:8085"   # user-service
+      - "8086:8086"   # recommendation-service
+    networks:
+      - persea-net
+
   auth-service:
     image: quay.io/keycloak/keycloak:26.5
     container_name: auth-service
     command:
       - start-dev
       - --import-realm
-    ports:
-      - "8081:8080"
     environment:
-      KC_HOSTNAME_STRICT: false        
-      KC_HOSTNAME_STRICT_HTTPS: false 
-      # KC_HOSTNAME: localhost
       KC_DB: postgres
       KC_DB_URL_HOST: postgres-keycloak
       KC_DB_URL_DATABASE: keycloak
@@ -26,8 +32,7 @@ services:
     depends_on:
       postgres-keycloak:
         condition: service_healthy
-    networks:
-      - persea-net
+    network_mode: "service:localhost"   
 
   postgres-keycloak:
     image: postgres:17
@@ -158,8 +163,6 @@ services:
       context: ./product-service
       dockerfile: Dockerfile
     container_name: product-service
-    ports:
-      - "8084:8084"
     depends_on:
       postgres:
         condition: service_healthy
@@ -171,8 +174,7 @@ services:
         condition: service_started
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    networks:
-      - persea-net
+    network_mode: "service:localhost"   
     restart: on-failure
 
   user-service:
@@ -180,8 +182,6 @@ services:
       context: ./user-service
       dockerfile: Dockerfile
     container_name: user-service
-    ports:
-      - "8085:8085"
     depends_on:
       postgres:
         condition: service_healthy
@@ -191,8 +191,7 @@ services:
         condition: service_started
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    networks:
-      - persea-net
+    network_mode: "service:localhost"   
     restart: on-failure
 
   recommendation-service:
@@ -200,8 +199,6 @@ services:
       context: ./recommendation-service
       dockerfile: Dockerfile
     container_name: recommendation-service
-    ports:
-      - "8086:8086"
     depends_on:
       postgres:
         condition: service_healthy
@@ -213,8 +210,7 @@ services:
         condition: service_started
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    networks:
-      - persea-net
+    network_mode: "service:localhost"   
     restart: on-failure
 
 volumes:
