@@ -1,5 +1,119 @@
-Но сначала получить токен через постман
+## Инструкция по запуску нагрузочных тестов с нуля
 
-& "C:\Program Files\k6\k6.exe" run --config config.json smoke.js
+Эта инструкция описывает полный цикл подготовки и запуска нагрузочных тестов для трёх микросервисов (`product-service`, `user-service`, `recommendation-service`) на чистой машине.  
+Предполагается, что у вас уже развёрнуты микросервисы (согласно основной документации проекта) и подняты Keycloak и Elasticsearch.
 
-& "C:\Program Files\k6\k6.exe" run --config config.json load-read-token.js
+---
+
+### 1. Предварительные требования
+
+- **k6** – установите согласно [официальной инструкции](https://k6.io/docs/get-started/installation/).
+- **PowerShell 7+** или **CMD** (на Windows) / **bash** (на Linux/macOS).
+- Доступ к Keycloak Admin Console (по умолчанию `http://localhost:8081/admin`).
+- **Postman** (для получения долгоживущего токена, если автоматическое получение не настроено).
+- Учётная запись пользователя с ролью `APP_USER` (или `app_user`) в Keycloak.
+
+---
+
+### 2. Настройка окружения
+
+#### 2.1 Keycloak – создание клиента и пользователя
+
+1. Войдите в **Keycloak Admin Console** → Realm `persea`.
+2. Создайте клиента для тестов (если ещё нет подходящего):
+    - **Clients** → **Create client**
+    - **Client ID** = `load-test`
+    - **Client type** = `OpenID Connect`
+    - **Client authentication** = `On` (сделает клиент конфиденциальным)
+    - **Direct access grants** = `On`
+    - Сохраните. Перейдите на вкладку **Credentials** и скопируйте **Client Secret**.
+3. Добавьте маппер, чтобы роли попадали в токен:
+    - В настройках клиента **load-test** → **Client Scopes** → нажмите на `load-test-dedicated` (или создайте новый scope).
+    - Внутри scope → **Mappers** → **Add mapper** → **By configuration** → выберите **User Realm Role**.
+    - Заполните:
+        * Name: `realm roles`
+        * Token Claim Name: `realm_access.roles`
+        * Add to access token: **ON**
+        * Multivalued: **ON**
+    - Сохраните.
+4. Создайте тестового пользователя:
+    - **Users** → **Add user** → **Username** = `loaduser` (или любой), **Enabled** = `ON`.
+    - Вкладка **Credentials** → задайте пароль (например, `test1234`), снимите галочку **Temporary**.
+    - Вкладка **Role Mappings** → назначьте realm-роль `app_user` (если роль отображается как `APP_USER` – тоже подойдёт).
+5. (Опционально) Увеличьте время жизни токена:
+    - **Realm settings** → **Tokens** → **Access Token Lifespan** = `1 Hours` (или больше).
+
+
+### 3. Получение токена для тестов
+
+На данный момент автоматическое получение токена через `password`-грант может не работать из-за ограничений Keycloak. Самый надёжный способ – использовать **Authorization Code + PKCE** через Postman.
+
+1. Откройте Postman, импортируйте коллекции из папки `postman/` проекта.
+2. В любом запросе перейдите на вкладку **Authorization**:
+    - Type: **OAuth 2.0**
+    - Grant Type: **Authorization Code (With PKCE)**
+    - Callback URL: `http://localhost:8080/` (должен совпадать с настройками клиента `android-app`)
+    - Auth URL: `http://localhost:8081/realms/persea/protocol/openid-connect/auth`
+    - Access Token URL: `http://localhost:8081/realms/persea/protocol/openid-connect/token`
+    - Client ID: `android-app`
+    - Scope: `openid`
+3. Нажмите **Get New Access Token** → авторизуйтесь под созданным пользователем.
+4. Скопируйте полученный `access_token`.
+5. Проверьте токен на [jwt.io](https://jwt.io): в payload должно быть поле `realm_access` с ролью `app_user` (или `APP_USER`).
+
+---
+
+### 4. Подготовка проекта нагрузочного тестирования
+
+1. Перейдите в корень общего репозитория, где уже должна быть папка `load-tests`. Структура выглядит так:
+
+   ```
+   load-tests/
+   ├── config.json          ← файл конфигурации с токеном (не коммитить!)
+   ├── scripts/
+   │   ├── smoke.js
+   │   ├── load-read-token.js
+   │   └── ...
+   └── README.md
+   ```
+
+2. Создайте файл `config.json` (добавьте его в `.gitignore`!):
+
+   ```json
+   {
+     "env": {
+       "USER_TOKEN": "вставьте_сюда_скопированный_токен"
+     }
+   }
+   ```
+
+   При желании здесь же можно переопределить URL сервисов.
+
+---
+
+### 5. Запуск тестов
+
+#### 5.1 Smoke-тест (проверка работоспособности)
+
+```powershell
+k6 run --config config.json .\scripts\smoke.js
+```
+
+Должен отработать быстро (1–2 секунды) и выдать все проверки зелёными (✓). Если что-то красное – проверьте токен и доступность сервисов.
+
+#### 5.2 Нагрузочный тест
+
+```powershell
+k6 run --config config.json .\scripts\load-read-token.js
+```
+
+Этот тест запускает 50 виртуальных пользователей по заданному профилю (1 минута наращивания, 3 минуты удержания, 1 минута спада).  
+В консоли вы увидите метрики времени ответа, количество успешных и проваленных запросов. При первом запуске скрипт попытается создать тестовые продукты (требуется роль `ADMIN`, поэтому ожидайте 403 – это нормально), после чего будет выполнять только читающие сценарии (поиск, лента, избранное при наличии продуктов).
+
+---
+
+### 6. Примечания и возможные проблемы
+
+- **Токен живёт 5 минут** – увеличьте срок в Keycloak (Realm Settings → Tokens) или обновляйте токен в скрипте.
+- **Нет продуктов в базе** – нагрузочный тест будет пропускать шаги с избранным, но основные сценарии всё равно отработают. Можно предварительно создать продукты через административный API.
+- **Невалидный заголовок Authorization** – проверьте, что в `config.json` токен записан без лишних пробелов и переносов строк.
