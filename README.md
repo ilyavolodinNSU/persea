@@ -30,6 +30,20 @@ Keycloak автоматически импортирует настройки `r
 * **Admin Console:** http://localhost:8080
 * **Admin Login/Password:** `admin` / `admin`
 
+### Web frontend
+
+В папке `frontend` добавлен React + Bootstrap клиент. Для него в `keycloak/import/persea-realm.json`
+создан public OIDC client `persea-web` с Authorization Code Flow, PKCE `S256` и refresh token rotation.
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Фронтенд доступен на http://localhost:5173 и проксирует микросервисы через Vite:
+`/api/product-service`, `/api/user-service`, `/api/recommendation-service`.
+
 ### Тестовые пользователи
 
 В системе предустановлены следующие пользователи:

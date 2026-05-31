@@ -1,0 +1,486 @@
+{
+  "info": {
+    "name": "High Rating Water - Supreme Category Dataset",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Brand - Северная Вершина",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Северная Вершина\",\"description\":\"Артезианская питьевая вода высшей категории, скважина 140 м\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_1', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Горный Эталон",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Горный Эталон\",\"description\":\"Горная питьевая вода высшей категории, природный источник\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_2', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Хрустальный Ключ",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Хрустальный Ключ\",\"description\":\"Артезианская вода высшей категории, сбалансированный состав\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_3', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Ледниковая Линия",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Ледниковая Линия\",\"description\":\"Горная вода высшей категории, мягкий сбалансированный вкус\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_4', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Аква Баланс",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Аква Баланс\",\"description\":\"Питьевая вода высшей категории с физиологически полноценным составом\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_5', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Чистая Высота",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Чистая Высота\",\"description\":\"Горная вода высшей категории, природная фильтрация\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_6', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Серебряный Родник",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Серебряный Родник\",\"description\":\"Артезианская вода высшей категории, стабильный минеральный профиль\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_7', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Живая Глубина",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Живая Глубина\",\"description\":\"Артезианская вода высшей категории, глубокая скважина\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_8', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Эко Плато",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Эко Плато\",\"description\":\"Природная питьевая вода высшей категории, экологически чистый район\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_9', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Brand - Реликт Источник",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products/brands",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Реликт Источник\",\"description\":\"Артезианская вода высшей категории, природный защищенный горизонт\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.collectionVariables.set('brand_hc_10', jsonData.id);"
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Create Product - Северная Вершина Balance",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Северная Вершина Balance\",\"categoryId\":1,\"brandId\":{{brand_hc_1}},\"imageURI\":\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrrb7urLQMVtqoRKgFdfJXgyXHt0tpVEHbHA&s\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Горный Эталон Premium",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Горный Эталон Premium\",\"categoryId\":1,\"brandId\":{{brand_hc_2}},\"imageURI\":\"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMHBhUSBxMVFRAVFRUWGBgYGBEYHhUYFRMgHhkXFRYZHCggGhomJxkWITEiJSktOi4uGSAzODMuNyotLjcBCgoKDQ0OGhAQGy0lHSUzKy0vLTYuMjctOC0vLy0tLS0tLS8tLS0tKy0tLTgtLS0tLS0tLS0tKy0tLSsrLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAABAUGAwcCAf/EAD8QAAIBAgQCBwQGCAcBAAAAAAABAgMRBAUSITFBBiJRYXGRsRMygaEjUnKCwfAHMzRCRGKz0SQ2ktLh4vEV/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAMEAQIF/8QAIhEBAQABBAICAwEAAAAAAAAAAAECAxESMSFxBEETIjJC/9oADAMBAAIRAxEAPwD3EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHm/6UukWKyfMqMMrqunGVOUnaNN3eu3GSZmqPTDHOPWxM/Kl/tLX9MWHqVs6oOjTm4qk1qUW05ObelPtSV7d5m8NlNZw/VVf9Ez7HxsNP8c3kfI+Tnn+SyWtNk3SrF1MZRVWs5KVWEZXjDdOdmtkerHjuSZZUjjaDnCaarQdtLTajO7e/JLfwPYjL82YTKcdmr4VysvIABhbQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPyclCDc9kt2BnelmQUc5rUHi4ty9povFtNRcJN7rhukVlToBg6X6t19uH01X+5KebvHZspUn9HG6j378fkTnmKcXr8C37ySI7YW22KrJsgpUcwhdTlpcra5znbTHazbdvgbMw+a5o8NGMsL70Wt/zx4GmyDNo5xl6qQ2lwkux93cc1Jl4td0+M3kWQAJKgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY/9IGbKjSjhVfVVTba5cdG3NNq7XZFmwMRjoxxnS2cHvNuC1dXqU4wTcY3W0pS4vsS7WV0pOXlLVt4+E3K8JGGBUZQ0zUVf+9vz6n7UoWu1bU923yvyS7S7eDVKildvTdK9r2fK9uBxnQtSajxFz3pMNoyuMwbqO8uRXdG6rybPNcm/ZygtfHbVUjG/Za8k/PtZqcTh3GD1b+P4JbFTUy+OIwklVW91v8AHl82Wxy3xsRyx2ylbwEfL5OWBhr46Y38bEgyNYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGUo4VYjphVe606Xttd6EaszOVO/S/E37Y/wBOJTT+/SWp9e2hru0bIjyvY74jkcJPY8KK7HSag7FXUhJ4NuP1lz70WePfUZBv/gvvL1RfDpDPtpcArYGF+OiPnbckHHBfskPsx9DsQva8AAcdAAAAAAAAAAAAAAAAAAAAAAAAAAAMzlf+cMT9z+nE0xmstVumGJ+5/TiU0+r6T1O8fa/xHIjy4EjEciPLgeHtW473GQv4P7y9UTcf7jIP8H96Pqi+HSGfbUYPbCQ+zH0Oxxwf7JD7K9DsZ60QAAAAAAAAAAAAAAAAAAAAAAAAAAAAADH4jFPLel1T2cNXtNG7aio9RK13xNgZfpXhG8dTq0veW3F8FGUto3tfq2v3rsKaVm+1T1Zdt4vqknOkm9vin6ESc5W5ecTvPE/RxUOcbvw/Nz9vqjc8vUU2OqSUeXnErKuLdOmk4balvddt9ord8ORdY53hK3K3m+Xld+RncVhpY/MaVKMrJyTfH3eDf57e4vhtshnvvG8wzvh4uPDSuO3LmjqfiVlsfpmaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKnpArUYSVvfUd7/vOy4eL8y2M903v/APHvTveM41Nv5Hc9YebHnK7SvrBVteApSXB0kvinuSfaaaNubI+Xx0ZetNrPrWe1m+afK/55nHEVtL3TVuT5bfNHuzynjfD4xk7Rty7vRHzldKVXOYO7UYKd4325pWXNr0ufOJems7fub+LT6vzTl8CNl9aVPMafs9+tZ912/wANR7/zXmf02gAM7QAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmuklRyxkY/upd3Pj6o0pkM8q685cXyt5O2/hs/I94dvGfSy1pYBabbIiy+kpW7E3Hutu4v1X/J2pQfs7T48GiMupVVvrL1KJ/Tljq6hR1T4tJ+LS/wDfMh0JOVKLhtJSuu9t/wDb1PjFxWlufBfPuJMsPowUdKtV4/Z1LZW5cn8UU2/VPe8m0i7xP050JOVCLlxaV/Gx0MjWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB57mWKt05nCnFu6jd+EFay7rM9CPOsZJV+nD9k2qkJNO6TUlxTT5NXas+4to91HWviNWleF7WK+r7zt2v1LPGOaopxbuuy6+RXVH7SfXe7aV/xEKhYi1Gnrau99CfC64ya5pdnN+BywVX2lBqcrzk77vd73bv5nXFuNWq3U2iuXcuCS7T5oSWIw0urZJq2783wV/BKxWdI3+o2ODqe1wsZPnFeh2IuWO+Ah4fiSjLe2uAAOOgAAAAAAAAAAAAAAAAAAAAAAAAAAHnNKm5/pDq6Vwl5dU9GKCeEhhOk3tJNJ1rNX2vKMVFpd9tPzKaeXHdLVx5bJ2Poy0r2fHuKmpBx48S+xD6/giDNLFQ1U93tw5pq8X5egmTtxZ3Fx2GW70XFe87tLujxfgTcbRsdsrw7w+ElVp23i+N94pN2W/Pt/sV57Yo8LyXmW/sMfD8SUcMDTdLBwjPioxTt223O5nvbTOgAHHQAAAAAAAAAAAAAAAAAAAAAAAAAACvzvKIZxhFDEXVpKUZLjGS/Dd7FgAKXB5LUo19WIxNScfq7pfNuy7jvjclp4jByp0UoKSSdkndJ3Sd+O7bLMHeVc4xn6fRprSqteo4JttLStXVsk/wCXnbmWkcE3FKtNyin9WKvbgnZWt8CYBcrSYyAAOOgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/2Q==\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":1},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Хрустальный Ключ Select",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Хрустальный Ключ Select\",\"categoryId\":1,\"brandId\":{{brand_hc_3}},\"imageURI\":\"https://foni.papik.pro/uploads/posts/2024-09/foni-papik-pro-84za-p-kartinki-butilka-vodi-na-prozrachnom-fone-2.png\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Ледниковая Линия Reserve",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Ледниковая Линия Reserve\",\"categoryId\":1,\"brandId\":{{brand_hc_4}},\"imageURI\":\"https://example.org/water/lednikovaya-liniya-reserve.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":1},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Аква Баланс Supreme",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Аква Баланс Supreme\",\"categoryId\":1,\"brandId\":{{brand_hc_5}},\"imageURI\":\"https://example.org/water/akva-balans-supreme.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Чистая Высота Optima",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Чистая Высота Optima\",\"categoryId\":1,\"brandId\":{{brand_hc_6}},\"imageURI\":\"https://example.org/water/chistaya-vysota-optima.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":1},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Серебряный Родник Premium",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Серебряный Родник Premium\",\"categoryId\":1,\"brandId\":{{brand_hc_7}},\"imageURI\":\"https://example.org/water/serebryanyy-rodnik-premium.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Живая Глубина Balance",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Живая Глубина Balance\",\"categoryId\":1,\"brandId\":{{brand_hc_8}},\"imageURI\":\"https://example.org/water/zhivaya-glubina-balance.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Эко Плато Reserve",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Эко Плато Reserve\",\"categoryId\":1,\"brandId\":{{brand_hc_9}},\"imageURI\":\"https://example.org/water/eko-plato-reserve.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    },
+    {
+      "name": "Create Product - Реликт Источник Supreme",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/products",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Реликт Источник Supreme\",\"categoryId\":1,\"brandId\":{{brand_hc_10}},\"imageURI\":\"https://example.org/water/relict-istochnik-supreme.jpg\",\"numericFactors\":[{\"factorId\":1,\"amount\":0.0},{\"factorId\":2,\"amount\":0.0},{\"factorId\":3,\"amount\":0.0},{\"factorId\":10,\"amount\":350.0},{\"factorId\":29,\"amount\":0.0},{\"factorId\":31,\"amount\":0.0},{\"factorId\":32,\"amount\":0.0},{\"factorId\":35,\"amount\":0.0},{\"factorId\":39,\"amount\":0.0},{\"factorId\":40,\"amount\":0.0},{\"factorId\":42,\"amount\":0.0},{\"factorId\":44,\"amount\":0.0},{\"factorId\":45,\"amount\":52.5},{\"factorId\":46,\"amount\":27.5},{\"factorId\":47,\"amount\":215.0},{\"factorId\":48,\"amount\":50.0},{\"factorId\":64,\"amount\":0.0},{\"factorId\":65,\"amount\":0.0},{\"factorId\":66,\"amount\":0.0},{\"factorId\":67,\"amount\":0.0},{\"factorId\":68,\"amount\":0.0},{\"factorId\":69,\"amount\":0.0}],\"booleanFactors\":[{\"factorId\":90,\"value\":true},{\"factorId\":91,\"value\":true},{\"factorId\":92,\"value\":true},{\"factorId\":93,\"value\":true},{\"factorId\":94,\"value\":true},{\"factorId\":95,\"value\":false},{\"factorId\":96,\"value\":false}],\"enumFactors\":[{\"factorId\":97,\"enumValueId\":2},{\"factorId\":98,\"enumValueId\":7}]}"
+        }
+      }
+    }
+  ]
+}
