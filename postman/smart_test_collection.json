@@ -50,6 +50,16 @@
       "type": "string"
     },
     {
+      "key": "product_barcode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_update_barcode",
+      "value": "",
+      "type": "string"
+    },
+    {
       "key": "keycloak_url",
       "value": "http://localhost:8080",
       "type": "string"
@@ -762,17 +772,35 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Test_{{$randomUUID}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://example.com/img.jpg\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
+              "raw": "{\n  \"name\": \"Test_{{$randomUUID}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://example.com/img.jpg\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
             }
           },
           "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "function randomEan13() {",
+                  "    var body = '46' + Math.floor(1000000000 + Math.random() * 9000000000).toString();",
+                  "    var sum = body.split('').reduce(function(acc, ch, index) {",
+                  "        var digit = parseInt(ch, 10);",
+                  "        return acc + digit * (index % 2 === 0 ? 1 : 3);",
+                  "    }, 0);",
+                  "    return body + ((10 - (sum % 10)) % 10);",
+                  "}",
+                  "pm.collectionVariables.set('product_barcode', randomEan13());"
+                ],
+                "type": "text/javascript"
+              }
+            },
             {
               "listen": "test",
               "script": {
                 "exec": [
                   "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
                   "var jsonData = pm.response.json();",
-                  "if (jsonData && jsonData.id) { pm.collectionVariables.set(\"product_id\", jsonData.id); }"
+                  "if (jsonData && jsonData.id) { pm.collectionVariables.set(\"product_id\", jsonData.id); }",
+                  "pm.test(\"Product barcode is returned\", function () { pm.expect(jsonData.barcode).to.eql(pm.collectionVariables.get('product_barcode')); });"
                 ],
                 "type": "text/javascript"
               }
@@ -799,7 +827,36 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Product barcode is returned\", function () { pm.expect(pm.response.json().barcode).to.eql(pm.collectionVariables.get('product_barcode')); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2.1 Get Product by Barcode",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/products/barcode/{{product_barcode}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "barcode",
+                "{{product_barcode}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Product barcode is returned\", function () { pm.expect(pm.response.json().barcode).to.eql(pm.collectionVariables.get('product_barcode')); });"
                 ]
               }
             }
@@ -827,15 +884,34 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Test_{{$randomUUID}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://example.com/img.jpg\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
+              "raw": "{\n  \"name\": \"Test_{{$randomUUID}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://example.com/img.jpg\",\n  \"barcode\": \"{{product_update_barcode}}\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
             }
           },
           "event": [
             {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "function randomEan13() {",
+                  "    var body = '46' + Math.floor(1000000000 + Math.random() * 9000000000).toString();",
+                  "    var sum = body.split('').reduce(function(acc, ch, index) {",
+                  "        var digit = parseInt(ch, 10);",
+                  "        return acc + digit * (index % 2 === 0 ? 1 : 3);",
+                  "    }, 0);",
+                  "    return body + ((10 - (sum % 10)) % 10);",
+                  "}",
+                  "pm.collectionVariables.set('product_update_barcode', randomEan13());"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Updated product barcode is returned\", function () { pm.expect(pm.response.json().barcode).to.eql(pm.collectionVariables.get('product_update_barcode')); });",
+                  "pm.collectionVariables.set('product_barcode', pm.collectionVariables.get('product_update_barcode'));"
                 ]
               }
             }

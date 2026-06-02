@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Data Population",
+    "name": "Water Factors Dataset",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -591,92 +591,6 @@
               "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_11_id', jsonData.id);",
               "pm.environment.set('unit_11_id', jsonData.id);"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Create Unit - мЗв/год",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/factors/units",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "factors",
-            "units"
-          ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"мЗв/год\"\n}"
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
-              "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('unit_12_id', jsonData.id);",
-              "pm.environment.set('unit_12_id', jsonData.id);"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Create Unit - points",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/factors/units",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "factors",
-            "units"
-          ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"points\"\n}"
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
-              "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('unit_13_id', jsonData.id);",
-              "pm.environment.set('unit_13_id', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -4633,7 +4547,7 @@
       ]
     },
     {
-      "name": "Create Factor - Стороннее тестирование",
+      "name": "Create Factor - Независимая лабораторная проверка",
       "request": {
         "method": "POST",
         "header": [
@@ -4654,7 +4568,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Стороннее тестирование\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Бонус: независимая лаборатория\"\n}"
+          "raw": "{\n  \"name\": \"Независимая лабораторная проверка\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Протокол проверки независимой аккредитованной лаборатории\"\n}"
         }
       },
       "response": [],
@@ -4836,48 +4750,6 @@
               "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_121', jsonData.id);",
               "pm.environment.set('factor_121', jsonData.id);"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Create Factor - Уровень фталатов",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{base_url}}/factors",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "factors"
-          ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Уровень фталатов\",\n  \"typeId\": {{factor_type_3_id}},\n  \"description\": \"Нет / низкий / средний / высокий\"\n}"
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
-              "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('factor_122', jsonData.id);",
-              "pm.environment.set('factor_122', jsonData.id);"
             ],
             "type": "text/javascript"
           }

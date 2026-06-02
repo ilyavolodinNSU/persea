@@ -46,6 +46,11 @@
       "type": "string"
     },
     {
+      "key": "product_barcode",
+      "value": "",
+      "type": "string"
+    },
+    {
       "key": "keycloak_url",
       "value": "http://localhost:8080",
       "type": "string"
@@ -182,7 +187,16 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
-                  "pm.collectionVariables.set('product_name', 'SyncProduct_' + Date.now());"
+                  "function randomEan13() {",
+                  "    var body = '46' + Math.floor(1000000000 + Math.random() * 9000000000).toString();",
+                  "    var sum = body.split('').reduce(function(acc, ch, index) {",
+                  "        var digit = parseInt(ch, 10);",
+                  "        return acc + digit * (index % 2 === 0 ? 1 : 3);",
+                  "    }, 0);",
+                  "    return body + ((10 - (sum % 10)) % 10);",
+                  "}",
+                  "pm.collectionVariables.set('product_name', 'SyncProduct_' + Date.now());",
+                  "pm.collectionVariables.set('product_barcode', randomEan13());"
                 ],
                 "type": "text/javascript"
               }
@@ -193,6 +207,9 @@
                 "exec": [
                   "pm.test('Status 201', function(){ pm.response.to.have.status(201); });",
                   "pm.collectionVariables.set('product_id', pm.response.json().id);",
+                  "pm.test('Product barcode is returned', function(){",
+                  "    pm.expect(pm.response.json().barcode).to.eql(pm.collectionVariables.get('product_barcode'));",
+                  "});",
                   "// Ждём Kafka CDC: product -> user-service и rec-service",
                   "var start = Date.now();",
                   "while (Date.now() - start < 3000) {}"
@@ -220,7 +237,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"{{product_name}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://test.com/img.jpg\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
+              "raw": "{\n  \"name\": \"{{product_name}}\",\n  \"categoryId\": {{cat_id}},\n  \"brandId\": {{brand_id}},\n  \"imageURI\": \"http://test.com/img.jpg\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [],\n  \"booleanFactors\": [],\n  \"enumFactors\": []\n}"
             }
           }
         }
@@ -237,6 +254,9 @@
               "script": {
                 "exec": [
                   "pm.test('Status 200', function(){ pm.response.to.have.status(200); });",
+                  "pm.test('Product barcode is returned', function(){",
+                  "    pm.expect(pm.response.json().barcode).to.eql(pm.collectionVariables.get('product_barcode'));",
+                  "});",
                   "// Ждём: outbox -> Kafka -> user-service.syncAction()",
                   "var start = Date.now();",
                   "while (Date.now() - start < 10000) {}"

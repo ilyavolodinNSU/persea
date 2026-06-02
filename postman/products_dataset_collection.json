@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Expertise Data Population",
+    "name": "Water Products Dataset",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -48,18 +48,76 @@
       "key": "token",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "product_barcode",
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
     {
+      "name": "Check Factor Dataset Variables",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "function readVar(key) { return pm.environment.get(key) || pm.collectionVariables.get(key); }",
+              "function writeVar(key, value) { pm.collectionVariables.set(key, value); try { pm.environment.set(key, value); } catch (e) {} }",
+              "const waterCategory = pm.response.json().find(category => category.code === 'WATER' || category.name === 'Бутилированная вода');",
+              "if (waterCategory && waterCategory.id) writeVar('water_category_id', waterCategory.id);",
+              "const required = ['water_category_id', 'factor_1', 'factor_2', 'factor_3', 'factor_5', 'factor_6', 'factor_9', 'factor_10', 'factor_29', 'factor_31', 'factor_32', 'factor_34', 'factor_35', 'factor_39', 'factor_40', 'factor_42', 'factor_44', 'factor_45', 'factor_46', 'factor_47', 'factor_48', 'factor_64', 'factor_65', 'factor_66', 'factor_67', 'factor_68', 'factor_69', 'factor_77', 'factor_78', 'factor_100', 'factor_101', 'factor_107', 'factor_108', 'factor_109', 'factor_110', 'factor_111', 'factor_120', 'factor_121', 'enum_1', 'enum_2', 'enum_3', 'enum_4', 'enum_5', 'enum_10', 'enum_11'];",
+              "const missing = required.filter(key => !readVar(key));",
+              "pm.test('Factor dataset variables are ready', function () { pm.expect(missing, 'missing variables').to.eql([]); });",
+              "if (missing.length > 0) {",
+              "    pm.execution.setNextRequest(null);",
+              "    throw new Error('Не заполнены переменные факторного датасета: ' + missing.join(', ') + '. Запусти factors_dataset_collection.json с этим же environment, затем products_dataset_collection.json с начала.');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products/categories",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Create Brand - Акваника",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Акваника id').to.exist;",
+              "pm.collectionVariables.set('brand_1', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -77,7 +135,10 @@
           "raw": "{\n  \"name\": \"Акваника\",\n  \"description\": \"ООО \\\"Акваника\\\", Нижегородская обл., Кулебакский район, с. Саваслейка\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - Черноголовка",
       "event": [
         {
           "listen": "test",
@@ -85,23 +146,19 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_1', jsonData.id);"
+              "pm.expect(jsonData.id, 'Черноголовка id').to.exist;",
+              "pm.collectionVariables.set('brand_2', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
-    },
-    {
-      "name": "Create Brand - Черноголовка",
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -119,7 +176,10 @@
           "raw": "{\n  \"name\": \"Черноголовка\",\n  \"description\": \"ООО «ПК «Аквалайф», г. Черноголовка, Московская обл., скважина 105 м, Гжельско-Ассельский водоносный горизонт\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - BonAqua",
       "event": [
         {
           "listen": "test",
@@ -127,23 +187,19 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_2', jsonData.id);"
+              "pm.expect(jsonData.id, 'BonAqua id').to.exist;",
+              "pm.collectionVariables.set('brand_3', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
-    },
-    {
-      "name": "Create Brand - BonAqua",
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -161,7 +217,10 @@
           "raw": "{\n  \"name\": \"BonAqua\",\n  \"description\": \"The Coca-Cola Company / Coca-Cola HBC Eurasia, производство на 10 заводах по РФ, централизованный источник водоснабжения + артезианские скважины\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - Архыз",
       "event": [
         {
           "listen": "test",
@@ -169,23 +228,19 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_3', jsonData.id);"
+              "pm.expect(jsonData.id, 'Архыз id').to.exist;",
+              "pm.collectionVariables.set('brand_4', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
-    },
-    {
-      "name": "Create Brand - Архыз",
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -203,7 +258,10 @@
           "raw": "{\n  \"name\": \"Архыз\",\n  \"description\": \"ООО «Висма», п. Архыз, Карачаево-Черкесская Республика, горная скважина\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - Акватонус",
       "event": [
         {
           "listen": "test",
@@ -211,23 +269,19 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_4', jsonData.id);"
+              "pm.expect(jsonData.id, 'Акватонус id').to.exist;",
+              "pm.collectionVariables.set('brand_5', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
-    },
-    {
-      "name": "Create Brand - Акватонус",
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -245,7 +299,10 @@
           "raw": "{\n  \"name\": \"Акватонус\",\n  \"description\": \"ООО «Акватонус», артезианская скважина, доочищенная вода первой категории\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - Ассоль",
       "event": [
         {
           "listen": "test",
@@ -253,23 +310,19 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_5', jsonData.id);"
+              "pm.expect(jsonData.id, 'Ассоль id').to.exist;",
+              "pm.collectionVariables.set('brand_6', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
-    },
-    {
-      "name": "Create Brand - Ассоль",
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -287,7 +340,10 @@
           "raw": "{\n  \"name\": \"Ассоль\",\n  \"description\": \"Артезианская вода первой категории, негазированная\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - Моя Цена",
       "event": [
         {
           "listen": "test",
@@ -295,23 +351,19 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_6', jsonData.id);"
+              "pm.expect(jsonData.id, 'Моя Цена id').to.exist;",
+              "pm.collectionVariables.set('brand_7', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
-    },
-    {
-      "name": "Create Brand - Моя Цена",
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -329,7 +381,10 @@
           "raw": "{\n  \"name\": \"Моя Цена\",\n  \"description\": \"Бюджетная СТМ (собственная торговая марка), источник не раскрыт\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Brand - Северная Вершина",
       "event": [
         {
           "listen": "test",
@@ -337,23 +392,508 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'response id').to.exist;",
-              "pm.collectionVariables.set('brand_7', jsonData.id);"
+              "pm.expect(jsonData.id, 'Северная Вершина id').to.exist;",
+              "pm.collectionVariables.set('brand_8', jsonData.id);"
             ],
             "type": "text/javascript"
           }
         }
-      ]
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Северная Вершина\",\n  \"description\": \"Артезианская питьевая вода высшей категории из предгорной скважины\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Горный Эталон",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Горный Эталон id').to.exist;",
+              "pm.collectionVariables.set('brand_9', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Горный Эталон\",\n  \"description\": \"Питьевая вода из горного водоносного горизонта с мягкой минерализацией\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Хрустальный Ключ",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Хрустальный Ключ id').to.exist;",
+              "pm.collectionVariables.set('brand_10', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Хрустальный Ключ\",\n  \"description\": \"Родниковая вода с многоступенчатой механической фильтрацией\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Ледниковая Линия",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Ледниковая Линия id').to.exist;",
+              "pm.collectionVariables.set('brand_11', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ледниковая Линия\",\n  \"description\": \"Вода ледникового происхождения в стеклянной и ПЭТ-упаковке\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Аква Баланс",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Аква Баланс id').to.exist;",
+              "pm.collectionVariables.set('brand_12', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Аква Баланс\",\n  \"description\": \"Питьевая вода с контролируемым минеральным составом\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Чистая Высота",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Чистая Высота id').to.exist;",
+              "pm.collectionVariables.set('brand_13', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Чистая Высота\",\n  \"description\": \"Артезианская вода из защищённого горизонта\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Серебряный Родник",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Серебряный Родник id').to.exist;",
+              "pm.collectionVariables.set('brand_14', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Серебряный Родник\",\n  \"description\": \"Родниковая вода с регулярным лабораторным контролем\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Живая Глубина",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Живая Глубина id').to.exist;",
+              "pm.collectionVariables.set('brand_15', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Живая Глубина\",\n  \"description\": \"Артезианская вода средней минерализации\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Эко Плато",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Эко Плато id').to.exist;",
+              "pm.collectionVariables.set('brand_16', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Эко Плато\",\n  \"description\": \"Питьевая вода из экологически контролируемой зоны водозабора\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Реликт Источник",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Реликт Источник id').to.exist;",
+              "pm.collectionVariables.set('brand_17', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Реликт Источник\",\n  \"description\": \"Природная питьевая вода из глубокого водоносного горизонта\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Волжский Родник",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Волжский Родник id').to.exist;",
+              "pm.collectionVariables.set('brand_18', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Волжский Родник\",\n  \"description\": \"Питьевая вода первой категории для ежедневного потребления\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand - Онежская Роса",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Онежская Роса id').to.exist;",
+              "pm.collectionVariables.set('brand_19', jsonData.id);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products/brands",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products",
+            "brands"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Онежская Роса\",\n  \"description\": \"Мягкая негазированная вода с умеренной минерализацией\"\n}"
+        }
+      },
+      "response": []
     },
     {
       "name": "Create Product - Акваника Детская (Aquanika Kids)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -367,31 +907,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Акваника Детская (Aquanika Kids)\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_1}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-artezianskaya-akvanika-detskaya-aquanika-kids/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 7.8\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 4.1\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 340.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 4.4\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 8.5\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_34}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.251\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.003\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 5.9\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 51.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 18.3\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.14\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.22\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Акваника Детская (Aquanika Kids)\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_1}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-artezianskaya-akvanika-detskaya-aquanika-kids/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 7.8\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 4.1\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 340.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 4.4\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 8.5\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_34}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.251\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.003\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 5.9\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 51.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 18.3\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.14\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.22\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - Черноголовская первой категории артезианская негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -405,31 +944,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Черноголовская первой категории артезианская негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-chernogolovskaya-pervoy-kategorii-kachestva-artezianskaya-negazirovannaya-717f18/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 60.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 1.07\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 1.04\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 7.5\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.72\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 43.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.12\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Черноголовская первой категории артезианская негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-chernogolovskaya-pervoy-kategorii-kachestva-artezianskaya-negazirovannaya-717f18/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 60.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 1.07\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 1.04\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 7.5\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.72\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 43.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.12\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - BonAqua питьевая негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -443,31 +981,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"BonAqua питьевая негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_3}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-negazirovannaya-bonaqua/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 90.0\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 2.77\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 220.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 6.1\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 1.03\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.43\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 20.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 21.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 15.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.14\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_4}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"BonAqua питьевая негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_3}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-negazirovannaya-bonaqua/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 90.0\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 2.77\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 220.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 6.1\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 1.03\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.43\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 20.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 21.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 15.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.14\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_4}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - Архыз детская негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -481,31 +1018,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Архыз детская негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_4}},\n  \"imageURI\": \"https://rskrf.ru/goods/gornaya-prirodnaya-pitevaya-voda-dlya-detskogo-pitaniya-arkhyz-negazirovannaya-dlya-detey-starshe-3-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 3.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 7.7\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 240.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 9.5\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.123\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 1.94\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 29.9\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 13.1\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 159.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.17\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Архыз детская негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_4}},\n  \"imageURI\": \"https://rskrf.ru/goods/gornaya-prirodnaya-pitevaya-voda-dlya-detskogo-pitaniya-arkhyz-negazirovannaya-dlya-detey-starshe-3-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 3.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 7.7\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 240.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 9.5\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.123\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 1.94\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 29.9\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 13.1\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 159.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.17\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - Акватонус артезианская негазированная первой категории",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -519,31 +1055,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Акватонус артезианская негазированная первой категории\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_5}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-negazirovannaya-doochishchennaya-pervoy-kategorii-kachestva-akvatonus-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 13.7\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 46.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.6\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 206.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 7.2\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 20.9\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.126\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.008\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 2.52\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 25.3\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.78\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 70.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.18\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.28\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Акватонус артезианская негазированная первой категории\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_5}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-negazirovannaya-doochishchennaya-pervoy-kategorii-kachestva-akvatonus-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 13.7\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 46.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.6\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 206.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 7.2\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 20.9\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.126\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.008\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 2.52\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 25.3\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.78\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 70.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.18\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.28\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - Ассоль артезианская негазированная первой категории",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -557,31 +1092,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Ассоль артезианская негазированная первой категории\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_6}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-pervoy-kategorii-negazirovannaya-assol-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 73.0\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 8.7\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.95\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 223.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.24\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 26.7\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 7.4\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.15\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Ассоль артезианская негазированная первой категории\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_6}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-pervoy-kategorii-negazirovannaya-assol-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 73.0\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 8.7\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.95\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 223.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.24\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 26.7\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 7.4\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.15\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - Моя Цена питьевая негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -595,31 +1129,30 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Моя Цена питьевая негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_7}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-piteva-moya-tsena-negazirovannaya/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 3.7\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 10.8\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.2\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 8.2\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 3.3\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.107\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.015\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.82\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 18.1\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.37\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.08\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_5}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Моя Цена питьевая негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_7}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-piteva-moya-tsena-negazirovannaya/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 3.7\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 10.8\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.2\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 8.2\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 3.3\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.107\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.015\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.82\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 18.1\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.37\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.08\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_5}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
+      "response": []
     },
     {
       "name": "Create Product - Черноголовский источник негазированная Clever",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "url": {
@@ -633,10 +1166,13 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Черноголовский источник негазированная Clever\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-chernogolovskiy-istochnik-negazirovannaya-clever-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 1.7\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 1.4\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 6.2\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.39\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 330.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 57.0\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.249\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.7\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 18.4\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 5.63\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 238.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Черноголовский источник негазированная Clever\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-chernogolovskiy-istochnik-negazirovannaya-clever-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 1.7\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 1.4\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 6.2\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.39\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 330.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 57.0\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.249\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.7\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 18.4\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 5.63\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 238.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ],\n  \"barcode\": \"{{product_barcode}}\"\n}"
         }
       },
-      "response": [],
+      "response": []
+    },
+    {
+      "name": "Create Product - Северная Вершина негазированная",
       "event": [
         {
           "listen": "test",
@@ -647,7 +1183,437 @@
             "type": "text/javascript"
           }
         }
-      ]
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Северная Вершина негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_8}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.2\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 340\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 50.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 25.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 205\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Горный Эталон стеклянная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Горный Эталон стеклянная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_9}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 330\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 54.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 26.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 210\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_10}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Хрустальный Ключ негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Хрустальный Ключ негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_10}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1564419320461-6870880221ad?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.35\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 320\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 48.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 198\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 49\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Ледниковая Линия стеклянная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ледниковая Линия стеклянная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_11}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 300\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 42.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 18.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 170\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_3}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_10}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Аква Баланс негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Аква Баланс негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_12}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.7\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 360\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 56.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 28.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 220\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 51\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Чистая Высота артезианская",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Чистая Высота артезианская\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_13}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 345\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 52.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 27.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 215\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_10}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Серебряный Родник негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Серебряный Родник негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_14}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1564419320461-6870880221ad?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.45\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 335\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 51.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 25.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 205\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Живая Глубина минерализованная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Живая Глубина минерализованная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_15}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.15\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 380\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 60.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 30.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 235\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Эко Плато стеклянная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Эко Плато стеклянная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_16}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.7\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 315\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 47.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 22.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 190\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 49\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_10}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Реликт Источник негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Реликт Источник негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_17}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 1.05\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 350\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 52.5\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 27.5\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 215\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Волжский Родник негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Волжский Родник негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_18}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1564419320461-6870880221ad?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 1.8\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 350\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 52.5\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 27.5\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 215\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Product - Онежская Роса негазированная",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "products"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Онежская Роса негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_19}},\n  \"imageURI\": \"https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=900&q=80\",\n  \"barcode\": \"{{product_barcode}}\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 2.5\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 350\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 52.5\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 27.5\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 215\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 50\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
+        }
+      },
+      "response": []
     }
   ],
   "event": [
@@ -664,6 +1630,30 @@
           "    pm.collectionVariables.set(key, value);",
           "    try { pm.environment.set(key, value); } catch (e) {}",
           "}",
+          "function randomEan13() {",
+          "    const body = '46' + Math.floor(1000000000 + Math.random() * 9000000000).toString();",
+          "    const sum = body.split('').reduce(function(acc, ch, index) {",
+          "        const digit = parseInt(ch, 10);",
+          "        return acc + digit * (index % 2 === 0 ? 1 : 3);",
+          "    }, 0);",
+          "    return body + ((10 - (sum % 10)) % 10);",
+          "}",
+          "function prepareProductBarcode() {",
+          "    const rawUrl = pm.request.url && pm.request.url.toString ? pm.request.url.toString() : '';",
+          "    const isProductCreate = pm.request.method === 'POST' && /\\/products$/.test(rawUrl);",
+          "    if (isProductCreate) writeVar('product_barcode', randomEan13());",
+          "}",
+          "prepareProductBarcode();",
+          "function assertProductVariablesReady() {",
+          "    const rawUrl = pm.request.url && pm.request.url.toString ? pm.request.url.toString() : '';",
+          "    const isProductCreate = pm.request.method === 'POST' && /\\/products$/.test(rawUrl);",
+          "    if (!isProductCreate || !pm.request.body || !pm.request.body.raw) return;",
+          "    const required = Array.from(pm.request.body.raw.matchAll(/\\{\\{([^}]+)\\}\\}/g)).map(match => match[1]);",
+          "    const missing = [...new Set(required)].filter(key => !readVar(key, ''));",
+          "    if (missing.length === 0) return;",
+          "    throw new Error('Не заполнены переменные для создания продукта: ' + missing.join(', ') + '. Сначала запусти factors_dataset_collection.json с этим же environment, потом текущую коллекцию с начала, чтобы создались brand_* переменные.');",
+          "}",
+          "assertProductVariablesReady();",
           "function isTokenFresh(token) {",
           "    if (!token) return false;",
           "    try {",
