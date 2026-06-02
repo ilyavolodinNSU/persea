@@ -85,7 +85,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - Акваника id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_1', jsonData.id);"
             ],
             "type": "text/javascript"
@@ -127,7 +127,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - Черноголовка id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_2', jsonData.id);"
             ],
             "type": "text/javascript"
@@ -169,7 +169,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - BonAqua id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_3', jsonData.id);"
             ],
             "type": "text/javascript"
@@ -211,7 +211,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - Архыз id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_4', jsonData.id);"
             ],
             "type": "text/javascript"
@@ -253,7 +253,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - Акватонус id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_5', jsonData.id);"
             ],
             "type": "text/javascript"
@@ -295,7 +295,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - Ассоль id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_6', jsonData.id);"
             ],
             "type": "text/javascript"
@@ -337,7 +337,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Brand - Моя Цена id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('brand_7', jsonData.id);"
             ],
             "type": "text/javascript"

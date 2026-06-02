@@ -158,7 +158,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - мг/л id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_1_id', jsonData.id);",
               "pm.environment.set('unit_1_id', jsonData.id);"
             ],
@@ -201,7 +201,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - мкг/л id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_2_id', jsonData.id);",
               "pm.environment.set('unit_2_id', jsonData.id);"
             ],
@@ -244,7 +244,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - единицы pH id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_3_id', jsonData.id);",
               "pm.environment.set('unit_3_id', jsonData.id);"
             ],
@@ -287,7 +287,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - градусы id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_4_id', jsonData.id);",
               "pm.environment.set('unit_4_id', jsonData.id);"
             ],
@@ -330,7 +330,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - баллы id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_5_id', jsonData.id);",
               "pm.environment.set('unit_5_id', jsonData.id);"
             ],
@@ -373,7 +373,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - мг-экв/л id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_6_id', jsonData.id);",
               "pm.environment.set('unit_6_id', jsonData.id);"
             ],
@@ -416,7 +416,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - ЕМФ id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_7_id', jsonData.id);",
               "pm.environment.set('unit_7_id', jsonData.id);"
             ],
@@ -459,7 +459,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - Бк/л id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_8_id', jsonData.id);",
               "pm.environment.set('unit_8_id', jsonData.id);"
             ],
@@ -502,7 +502,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - КОЕ/мл id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_9_id', jsonData.id);",
               "pm.environment.set('unit_9_id', jsonData.id);"
             ],
@@ -545,7 +545,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - БОЕ/мл id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_10_id', jsonData.id);",
               "pm.environment.set('unit_10_id', jsonData.id);"
             ],
@@ -588,7 +588,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - очаг/дм³ id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_11_id', jsonData.id);",
               "pm.environment.set('unit_11_id', jsonData.id);"
             ],
@@ -631,7 +631,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - мЗв/год id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_12_id', jsonData.id);",
               "pm.environment.set('unit_12_id', jsonData.id);"
             ],
@@ -674,7 +674,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Unit - points id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('unit_13_id', jsonData.id);",
               "pm.environment.set('unit_13_id', jsonData.id);"
             ],
@@ -717,7 +717,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'water category id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('water_category_id', jsonData.id);",
               "pm.environment.set('water_category_id', jsonData.id);"
             ],
@@ -759,7 +759,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Запах id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_1', jsonData.id);",
               "pm.environment.set('factor_1', jsonData.id);"
             ],
@@ -801,7 +801,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Привкус id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_2', jsonData.id);",
               "pm.environment.set('factor_2', jsonData.id);"
             ],
@@ -843,7 +843,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Цветность id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_3', jsonData.id);",
               "pm.environment.set('factor_3', jsonData.id);"
             ],
@@ -885,7 +885,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Мутность id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_4', jsonData.id);",
               "pm.environment.set('factor_4', jsonData.id);"
             ],
@@ -927,7 +927,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлориды id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_5', jsonData.id);",
               "pm.environment.set('factor_5', jsonData.id);"
             ],
@@ -969,7 +969,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Сульфаты id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_6', jsonData.id);",
               "pm.environment.set('factor_6', jsonData.id);"
             ],
@@ -1011,7 +1011,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Фосфаты (PO₄) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_7', jsonData.id);",
               "pm.environment.set('factor_7', jsonData.id);"
             ],
@@ -1053,7 +1053,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Водородный показатель (pH) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_8', jsonData.id);",
               "pm.environment.set('factor_8', jsonData.id);"
             ],
@@ -1095,7 +1095,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Жёсткость общая id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_9', jsonData.id);",
               "pm.environment.set('factor_9', jsonData.id);"
             ],
@@ -1137,7 +1137,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Общая минерализация (сухой остаток) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_10', jsonData.id);",
               "pm.environment.set('factor_10', jsonData.id);"
             ],
@@ -1179,7 +1179,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Перманганатная окисляемость id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_11', jsonData.id);",
               "pm.environment.set('factor_11', jsonData.id);"
             ],
@@ -1221,7 +1221,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Нефтепродукты id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_12', jsonData.id);",
               "pm.environment.set('factor_12', jsonData.id);"
             ],
@@ -1263,7 +1263,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - ПАВ (анионоактивные) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_13', jsonData.id);",
               "pm.environment.set('factor_13', jsonData.id);"
             ],
@@ -1305,7 +1305,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Фенольный индекс id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_14', jsonData.id);",
               "pm.environment.set('factor_14', jsonData.id);"
             ],
@@ -1347,7 +1347,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Алюминий (Al) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_15', jsonData.id);",
               "pm.environment.set('factor_15', jsonData.id);"
             ],
@@ -1389,7 +1389,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Барий (Ba) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_16', jsonData.id);",
               "pm.environment.set('factor_16', jsonData.id);"
             ],
@@ -1431,7 +1431,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бериллий (Be) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_17', jsonData.id);",
               "pm.environment.set('factor_17', jsonData.id);"
             ],
@@ -1473,7 +1473,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бор (B) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_18', jsonData.id);",
               "pm.environment.set('factor_18', jsonData.id);"
             ],
@@ -1515,7 +1515,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Ванадий (V) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_19', jsonData.id);",
               "pm.environment.set('factor_19', jsonData.id);"
             ],
@@ -1557,7 +1557,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Висмут (Bi) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_20', jsonData.id);",
               "pm.environment.set('factor_20', jsonData.id);"
             ],
@@ -1599,7 +1599,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Железо (Fe) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_21', jsonData.id);",
               "pm.environment.set('factor_21', jsonData.id);"
             ],
@@ -1641,7 +1641,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Кадмий (Cd) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_22', jsonData.id);",
               "pm.environment.set('factor_22', jsonData.id);"
             ],
@@ -1683,7 +1683,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Кобальт (Co) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_23', jsonData.id);",
               "pm.environment.set('factor_23', jsonData.id);"
             ],
@@ -1725,7 +1725,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Литий (Li) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_24', jsonData.id);",
               "pm.environment.set('factor_24', jsonData.id);"
             ],
@@ -1767,7 +1767,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Марганец (Mn) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_25', jsonData.id);",
               "pm.environment.set('factor_25', jsonData.id);"
             ],
@@ -1809,7 +1809,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Медь (Cu) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_26', jsonData.id);",
               "pm.environment.set('factor_26', jsonData.id);"
             ],
@@ -1851,7 +1851,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Молибден (Mo) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_27', jsonData.id);",
               "pm.environment.set('factor_27', jsonData.id);"
             ],
@@ -1893,7 +1893,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Мышьяк (As) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_28', jsonData.id);",
               "pm.environment.set('factor_28', jsonData.id);"
             ],
@@ -1935,7 +1935,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Натрий (Na) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_29', jsonData.id);",
               "pm.environment.set('factor_29', jsonData.id);"
             ],
@@ -1977,7 +1977,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Никель (Ni) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_30', jsonData.id);",
               "pm.environment.set('factor_30', jsonData.id);"
             ],
@@ -2019,7 +2019,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Нитраты (NO₃⁻) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_31', jsonData.id);",
               "pm.environment.set('factor_31', jsonData.id);"
             ],
@@ -2061,7 +2061,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Нитриты (NO₂⁻) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_32', jsonData.id);",
               "pm.environment.set('factor_32', jsonData.id);"
             ],
@@ -2103,7 +2103,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Ртуть (Hg) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_33', jsonData.id);",
               "pm.environment.set('factor_33', jsonData.id);"
             ],
@@ -2145,7 +2145,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Свинец (Pb) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_34', jsonData.id);",
               "pm.environment.set('factor_34', jsonData.id);"
             ],
@@ -2187,7 +2187,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Селен (Se) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_35', jsonData.id);",
               "pm.environment.set('factor_35', jsonData.id);"
             ],
@@ -2229,7 +2229,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Серебро (Ag) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_36', jsonData.id);",
               "pm.environment.set('factor_36', jsonData.id);"
             ],
@@ -2271,7 +2271,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Стронций (Sr) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_37', jsonData.id);",
               "pm.environment.set('factor_37', jsonData.id);"
             ],
@@ -2313,7 +2313,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Сурьма (Sb) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_38', jsonData.id);",
               "pm.environment.set('factor_38', jsonData.id);"
             ],
@@ -2355,7 +2355,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Фториды (F⁻) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_39', jsonData.id);",
               "pm.environment.set('factor_39', jsonData.id);"
             ],
@@ -2397,7 +2397,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хром (Cr⁶⁺) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_40', jsonData.id);",
               "pm.environment.set('factor_40', jsonData.id);"
             ],
@@ -2439,7 +2439,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Цианиды (CN⁻) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_41', jsonData.id);",
               "pm.environment.set('factor_41', jsonData.id);"
             ],
@@ -2481,7 +2481,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Цинк (Zn) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_42', jsonData.id);",
               "pm.environment.set('factor_42', jsonData.id);"
             ],
@@ -2523,7 +2523,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Аммиак / аммоний-ион (NH₄⁺) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_43', jsonData.id);",
               "pm.environment.set('factor_43', jsonData.id);"
             ],
@@ -2565,7 +2565,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Калий (K) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_44', jsonData.id);",
               "pm.environment.set('factor_44', jsonData.id);"
             ],
@@ -2607,7 +2607,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Кальций (Ca) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_45', jsonData.id);",
               "pm.environment.set('factor_45', jsonData.id);"
             ],
@@ -2649,7 +2649,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Магний (Mg) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_46', jsonData.id);",
               "pm.environment.set('factor_46', jsonData.id);"
             ],
@@ -2691,7 +2691,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бикарбонаты (HCO₃⁻) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_47', jsonData.id);",
               "pm.environment.set('factor_47', jsonData.id);"
             ],
@@ -2733,7 +2733,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Йодид-ион (I⁻) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_48', jsonData.id);",
               "pm.environment.set('factor_48', jsonData.id);"
             ],
@@ -2775,7 +2775,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Силикаты (SiO₂) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_49', jsonData.id);",
               "pm.environment.set('factor_49', jsonData.id);"
             ],
@@ -2817,7 +2817,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Сероводород (H₂S) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_50', jsonData.id);",
               "pm.environment.set('factor_50', jsonData.id);"
             ],
@@ -2859,7 +2859,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Четырёххлористый углерод (CCl₄) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_51', jsonData.id);",
               "pm.environment.set('factor_51', jsonData.id);"
             ],
@@ -2901,7 +2901,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлороформ (CHCl₃) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_52', jsonData.id);",
               "pm.environment.set('factor_52', jsonData.id);"
             ],
@@ -2943,7 +2943,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - 1,2-дихлорэтан id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_53', jsonData.id);",
               "pm.environment.set('factor_53', jsonData.id);"
             ],
@@ -2985,7 +2985,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - 1,1-дихлорэтилен id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_54', jsonData.id);",
               "pm.environment.set('factor_54', jsonData.id);"
             ],
@@ -3027,7 +3027,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бензол id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_55', jsonData.id);",
               "pm.environment.set('factor_55', jsonData.id);"
             ],
@@ -3069,7 +3069,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бенз(а)пирен id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_56', jsonData.id);",
               "pm.environment.set('factor_56', jsonData.id);"
             ],
@@ -3111,7 +3111,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Ди(2-этилгексил)фталат id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_57', jsonData.id);",
               "pm.environment.set('factor_57', jsonData.id);"
             ],
@@ -3153,7 +3153,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Гексахлорбензол id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_58', jsonData.id);",
               "pm.environment.set('factor_58', jsonData.id);"
             ],
@@ -3195,7 +3195,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Линдан (γ-ГХЦГ) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_59', jsonData.id);",
               "pm.environment.set('factor_59', jsonData.id);"
             ],
@@ -3237,7 +3237,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - ДДТ (сумма изомеров) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_60', jsonData.id);",
               "pm.environment.set('factor_60', jsonData.id);"
             ],
@@ -3279,7 +3279,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - 2,4-Д (кислота) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_61', jsonData.id);",
               "pm.environment.set('factor_61', jsonData.id);"
             ],
@@ -3321,7 +3321,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Атразин id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_62', jsonData.id);",
               "pm.environment.set('factor_62', jsonData.id);"
             ],
@@ -3363,7 +3363,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Симазин id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_63', jsonData.id);",
               "pm.environment.set('factor_63', jsonData.id);"
             ],
@@ -3405,7 +3405,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлор остаточный свободный id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_64', jsonData.id);",
               "pm.environment.set('factor_64', jsonData.id);"
             ],
@@ -3447,7 +3447,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлор остаточный связанный id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_65', jsonData.id);",
               "pm.environment.set('factor_65', jsonData.id);"
             ],
@@ -3489,7 +3489,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлороформ (побоч.) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_66', jsonData.id);",
               "pm.environment.set('factor_66', jsonData.id);"
             ],
@@ -3531,7 +3531,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бромоформ id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_67', jsonData.id);",
               "pm.environment.set('factor_67', jsonData.id);"
             ],
@@ -3573,7 +3573,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Дибромхлорметан id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_68', jsonData.id);",
               "pm.environment.set('factor_68', jsonData.id);"
             ],
@@ -3615,7 +3615,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Бромдихлорметан id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_69', jsonData.id);",
               "pm.environment.set('factor_69', jsonData.id);"
             ],
@@ -3657,7 +3657,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Озон остаточный id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_70', jsonData.id);",
               "pm.environment.set('factor_70', jsonData.id);"
             ],
@@ -3699,7 +3699,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Формальдегид id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_71', jsonData.id);",
               "pm.environment.set('factor_71', jsonData.id);"
             ],
@@ -3741,7 +3741,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлорат-ион id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_72', jsonData.id);",
               "pm.environment.set('factor_72', jsonData.id);"
             ],
@@ -3783,7 +3783,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Хлорит-ион id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_73', jsonData.id);",
               "pm.environment.set('factor_73', jsonData.id);"
             ],
@@ -3825,7 +3825,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Диоксид хлора id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_74', jsonData.id);",
               "pm.environment.set('factor_74', jsonData.id);"
             ],
@@ -3867,7 +3867,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Дихлоруксусная кислота (ДХУК) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_75', jsonData.id);",
               "pm.environment.set('factor_75', jsonData.id);"
             ],
@@ -3909,7 +3909,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Трихлоруксусная кислота (ТХУК) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_76', jsonData.id);",
               "pm.environment.set('factor_76', jsonData.id);"
             ],
@@ -3951,7 +3951,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Общая альфа-радиоактивность id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_77', jsonData.id);",
               "pm.environment.set('factor_77', jsonData.id);"
             ],
@@ -3993,7 +3993,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Общая бета-радиоактивность id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_78', jsonData.id);",
               "pm.environment.set('factor_78', jsonData.id);"
             ],
@@ -4035,7 +4035,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Радон (²²²Rn) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_79', jsonData.id);",
               "pm.environment.set('factor_79', jsonData.id);"
             ],
@@ -4077,7 +4077,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - ОМЧ (при 37°C) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_80', jsonData.id);",
               "pm.environment.set('factor_80', jsonData.id);"
             ],
@@ -4119,7 +4119,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - ОМЧ (при 22°C) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_81', jsonData.id);",
               "pm.environment.set('factor_81', jsonData.id);"
             ],
@@ -4161,7 +4161,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - ОКБ (общие колиформные бактерии) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_82', jsonData.id);",
               "pm.environment.set('factor_82', jsonData.id);"
             ],
@@ -4203,7 +4203,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - ТКБ (термотолерантные колиформные) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_83', jsonData.id);",
               "pm.environment.set('factor_83', jsonData.id);"
             ],
@@ -4245,7 +4245,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Колифаги id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_84', jsonData.id);",
               "pm.environment.set('factor_84', jsonData.id);"
             ],
@@ -4287,7 +4287,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Споры сульфитредуцирующих клостридий id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_85', jsonData.id);",
               "pm.environment.set('factor_85', jsonData.id);"
             ],
@@ -4329,7 +4329,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Pseudomonas aeruginosa id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_86', jsonData.id);",
               "pm.environment.set('factor_86', jsonData.id);"
             ],
@@ -4371,7 +4371,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Цисты лямблий id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_87', jsonData.id);",
               "pm.environment.set('factor_87', jsonData.id);"
             ],
@@ -4413,7 +4413,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Яйца гельминтов id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_88', jsonData.id);",
               "pm.environment.set('factor_88', jsonData.id);"
             ],
@@ -4455,7 +4455,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Растворённый кислород (O₂) id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_89', jsonData.id);",
               "pm.environment.set('factor_89', jsonData.id);"
             ],
@@ -4497,7 +4497,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Наличие лабораторного отчёта id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_100', jsonData.id);",
               "pm.environment.set('factor_100', jsonData.id);"
             ],
@@ -4539,7 +4539,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Наличие декларации ТР ЕАЭС 044/2017 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_101', jsonData.id);",
               "pm.environment.set('factor_101', jsonData.id);"
             ],
@@ -4581,7 +4581,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Опубликованы лаб. данные id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_107', jsonData.id);",
               "pm.environment.set('factor_107', jsonData.id);"
             ],
@@ -4623,7 +4623,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Информация о составе на этикетке id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_108', jsonData.id);",
               "pm.environment.set('factor_108', jsonData.id);"
             ],
@@ -4665,7 +4665,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Стороннее тестирование id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_109', jsonData.id);",
               "pm.environment.set('factor_109', jsonData.id);"
             ],
@@ -4707,7 +4707,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Крышка выделяет вещества id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_110', jsonData.id);",
               "pm.environment.set('factor_110', jsonData.id);"
             ],
@@ -4749,7 +4749,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Сертификат без микропластика id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_111', jsonData.id);",
               "pm.environment.set('factor_111', jsonData.id);"
             ],
@@ -4791,7 +4791,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Тип источника воды id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_120', jsonData.id);",
               "pm.environment.set('factor_120', jsonData.id);"
             ],
@@ -4833,7 +4833,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Тип упаковки id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_121', jsonData.id);",
               "pm.environment.set('factor_121', jsonData.id);"
             ],
@@ -4875,7 +4875,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Create Factor - Уровень фталатов id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('factor_122', jsonData.id);",
               "pm.environment.set('factor_122', jsonData.id);"
             ],
@@ -8759,7 +8759,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Родниковая' for Factor SQL-ID 120 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_1', jsonData.id);",
               "pm.environment.set('enum_1', jsonData.id);"
             ],
@@ -8844,7 +8844,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Артезианская' for Factor SQL-ID 120 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_2', jsonData.id);",
               "pm.environment.set('enum_2', jsonData.id);"
             ],
@@ -8929,7 +8929,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Ледниковая' for Factor SQL-ID 120 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_3', jsonData.id);",
               "pm.environment.set('enum_3', jsonData.id);"
             ],
@@ -9014,7 +9014,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Водопроводная' for Factor SQL-ID 120 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_4', jsonData.id);",
               "pm.environment.set('enum_4', jsonData.id);"
             ],
@@ -9099,7 +9099,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Неизвестный' for Factor SQL-ID 120 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_5', jsonData.id);",
               "pm.environment.set('enum_5', jsonData.id);"
             ],
@@ -9184,7 +9184,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Стекло' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_10', jsonData.id);",
               "pm.environment.set('enum_10', jsonData.id);"
             ],
@@ -9269,7 +9269,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'ПЭТ' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_11', jsonData.id);",
               "pm.environment.set('enum_11', jsonData.id);"
             ],
@@ -9354,7 +9354,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Полистирол' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_12', jsonData.id);",
               "pm.environment.set('enum_12', jsonData.id);"
             ],
@@ -9439,7 +9439,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Полипропилен' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_13', jsonData.id);",
               "pm.environment.set('enum_13', jsonData.id);"
             ],
@@ -9524,7 +9524,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Полиэтилен' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_14', jsonData.id);",
               "pm.environment.set('enum_14', jsonData.id);"
             ],
@@ -9609,7 +9609,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Нейлон' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_15', jsonData.id);",
               "pm.environment.set('enum_15', jsonData.id);"
             ],
@@ -9694,7 +9694,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Биопластик PLA' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_16', jsonData.id);",
               "pm.environment.set('enum_16', jsonData.id);"
             ],
@@ -9779,7 +9779,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Алюминий' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_17', jsonData.id);",
               "pm.environment.set('enum_17', jsonData.id);"
             ],
@@ -9864,7 +9864,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Картон с пластиковым вкладышем' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_18', jsonData.id);",
               "pm.environment.set('enum_18', jsonData.id);"
             ],
@@ -9949,7 +9949,7 @@
             "exec": [
               "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
               "const jsonData = pm.response.json();",
-              "pm.expect(jsonData.id, 'Enum Value 'Бумага' for Factor SQL-ID 121 id').to.exist;",
+              "pm.expect(jsonData.id, 'response id').to.exist;",
               "pm.collectionVariables.set('enum_19', jsonData.id);",
               "pm.environment.set('enum_19', jsonData.id);"
             ],
