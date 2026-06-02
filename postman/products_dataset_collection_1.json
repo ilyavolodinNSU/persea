@@ -52,6 +52,3192 @@
   ],
   "item": [
     {
+      "name": "Prerequisites - High Rating Water",
+      "item": [
+        {
+          "name": "Resolve Factor Types - High Rating",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/types",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "types"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const types = pm.response.json();",
+                  "function saveType(name, variable) {",
+                  "    const found = types.find(function (type) { return type.name === name; });",
+                  "    pm.expect(found, 'factor type ' + name).to.exist;",
+                  "    pm.collectionVariables.set(variable, found.id);",
+                  "    pm.environment.set(variable, found.id);",
+                  "}",
+                  "saveType('numeric', 'factor_type_1_id');",
+                  "saveType('boolean', 'factor_type_2_id');",
+                  "saveType('enum', 'factor_type_3_id');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resolve Category - High Rating Water",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "categories"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const categories = pm.response.json();",
+                  "const water = categories.find(function (category) { return category.code === 'WATER'; });",
+                  "if (water) {",
+                  "    pm.collectionVariables.set('water_category_id', water.id);",
+                  "    pm.environment.set('water_category_id', water.id);",
+                  "    pm.execution.setNextRequest('Create Unit - High Rating');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Category - High Rating Water",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"High Rating Water {{$guid}}\",\n  \"code\": \"WATER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('water_category_id', jsonData.id);",
+                  "pm.environment.set('water_category_id', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Unit - High Rating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/units",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "units"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"hr-points-{{$guid}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('unit_hr_id', jsonData.id);",
+                  "pm.environment.set('unit_hr_id', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 1 - Запах",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Запах HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Интенсивность запаха при 20°C и 60°C\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_1', jsonData.id);",
+                  "pm.environment.set('factor_1', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 2 - Привкус",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Привкус HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Интенсивность привкуса при 20°C\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_2', jsonData.id);",
+                  "pm.environment.set('factor_2', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 3 - Цветность",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Цветность HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Цветность воды\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_3', jsonData.id);",
+                  "pm.environment.set('factor_3', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 10 - Общая минерализация (сухой остаток)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Общая минерализация (сухой остаток) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"TDS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_10', jsonData.id);",
+                  "pm.environment.set('factor_10', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 29 - Натрий (Na)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Натрий (Na) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Na\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_29', jsonData.id);",
+                  "pm.environment.set('factor_29', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 31 - Нитраты (NO₃⁻)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Нитраты (NO₃⁻) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"NO₃\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_31', jsonData.id);",
+                  "pm.environment.set('factor_31', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 32 - Нитриты (NO₂⁻)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Нитриты (NO₂⁻) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"NO₂\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_32', jsonData.id);",
+                  "pm.environment.set('factor_32', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 35 - Селен (Se)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Селен (Se) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Se\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_35', jsonData.id);",
+                  "pm.environment.set('factor_35', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 39 - Фториды (F⁻)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Фториды (F⁻) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"F\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_39', jsonData.id);",
+                  "pm.environment.set('factor_39', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 40 - Хром (Cr⁶⁺)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Хром (Cr⁶⁺) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Cr шестивалентный\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_40', jsonData.id);",
+                  "pm.environment.set('factor_40', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 42 - Цинк (Zn)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Цинк (Zn) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Zn\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_42', jsonData.id);",
+                  "pm.environment.set('factor_42', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 44 - Калий (K)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Калий (K) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"K\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_44', jsonData.id);",
+                  "pm.environment.set('factor_44', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 45 - Кальций (Ca)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Кальций (Ca) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Ca\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_45', jsonData.id);",
+                  "pm.environment.set('factor_45', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 46 - Магний (Mg)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Магний (Mg) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Mg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_46', jsonData.id);",
+                  "pm.environment.set('factor_46', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 47 - Бикарбонаты (HCO₃⁻)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Бикарбонаты (HCO₃⁻) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Гидрокарбонаты\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_47', jsonData.id);",
+                  "pm.environment.set('factor_47', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 48 - Йодид-ион (I⁻)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Йодид-ион (I⁻) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"I\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_48', jsonData.id);",
+                  "pm.environment.set('factor_48', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 64 - Хлор остаточный свободный",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Хлор остаточный свободный HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Свободный Cl₂\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_64', jsonData.id);",
+                  "pm.environment.set('factor_64', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 65 - Хлор остаточный связанный",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Хлор остаточный связанный HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"Связанный хлорамин\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_65', jsonData.id);",
+                  "pm.environment.set('factor_65', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 66 - Хлороформ (побоч.)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Хлороформ (побоч.) HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"ТГМ - хлороформ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_66', jsonData.id);",
+                  "pm.environment.set('factor_66', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 67 - Бромоформ",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Бромоформ HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"ТГМ - бромоформ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_67', jsonData.id);",
+                  "pm.environment.set('factor_67', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 68 - Дибромхлорметан",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Дибромхлорметан HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"ТГМ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_68', jsonData.id);",
+                  "pm.environment.set('factor_68', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 69 - Бромдихлорметан",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Бромдихлорметан HR {{$guid}}\",\n  \"typeId\": {{factor_type_1_id}},\n  \"description\": \"ТГМ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_69', jsonData.id);",
+                  "pm.environment.set('factor_69', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 100 - Наличие лабораторного отчёта",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Наличие лабораторного отчёта HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Полный отчёт с обязательными категориями\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_100', jsonData.id);",
+                  "pm.environment.set('factor_100', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 101 - Наличие декларации ТР ЕАЭС 044/2017",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Наличие декларации ТР ЕАЭС 044/2017 HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Декларация соответствия техрегламенту\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_101', jsonData.id);",
+                  "pm.environment.set('factor_101', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 107 - Опубликованы лаб. данные",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Опубликованы лаб. данные HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Бонус: производитель раскрывает данные\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_107', jsonData.id);",
+                  "pm.environment.set('factor_107', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 108 - Информация о составе на этикетке",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Информация о составе на этикетке HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Бонус: подробный состав сверх минимума маркировки\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_108', jsonData.id);",
+                  "pm.environment.set('factor_108', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 109 - Стороннее тестирование",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Стороннее тестирование HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Бонус: независимая лаборатория\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_109', jsonData.id);",
+                  "pm.environment.set('factor_109', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 110 - Крышка выделяет вещества",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Крышка выделяет вещества HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Крашеный металл, ПВХ и пр.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_110', jsonData.id);",
+                  "pm.environment.set('factor_110', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 111 - Сертификат без микропластика",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Сертификат без микропластика HR {{$guid}}\",\n  \"typeId\": {{factor_type_2_id}},\n  \"description\": \"Снижает штраф упаковки на 50% (бизнес-логика)\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_111', jsonData.id);",
+                  "pm.environment.set('factor_111', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 120 - Тип источника воды",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тип источника воды HR {{$guid}}\",\n  \"typeId\": {{factor_type_3_id}},\n  \"description\": \"Источник: родник, артезианская, муниципальная и т.д.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_120', jsonData.id);",
+                  "pm.environment.set('factor_120', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Factor 121 - Тип упаковки",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Тип упаковки HR {{$guid}}\",\n  \"typeId\": {{factor_type_3_id}},\n  \"description\": \"Материал тары\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('factor_121', jsonData.id);",
+                  "pm.environment.set('factor_121', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_1}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_1}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_2}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_2}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 3",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_3}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_3}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 10",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_10}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_10}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 200,\n  \"maxValue\": 500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 29",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_29}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_29}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 200\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 31",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_31}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_31}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 32",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_32}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_32}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.005\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 35",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_35}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_35}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.01\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 39",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_39}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_39}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 40",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_40}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_40}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.03\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 42",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_42}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_42}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 44",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_44}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_44}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 45",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_45}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_45}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 25,\n  \"maxValue\": 80\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 46",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_46}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_46}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 5,\n  \"maxValue\": 50\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 47",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_47}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_47}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 30,\n  \"maxValue\": 400\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 48",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_48}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_48}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 40,\n  \"maxValue\": 60\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 64",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_64}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_64}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 65",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_65}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_65}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 66",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_66}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_66}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.06\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 67",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_67}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_67}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.001\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 68",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_68}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_68}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.003\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Numeric Rule 69",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_69}}/numeric-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_69}}",
+                "numeric-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"unitId\": {{unit_hr_id}},\n  \"minValue\": 0,\n  \"maxValue\": 0.003\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 100",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_100}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_100}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": -45\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 101",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_101}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_101}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": -5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 107",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_107}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_107}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 108",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_108}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_108}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 109",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_109}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_109}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 110",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_110}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_110}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": -7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Boolean Rule 111",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_111}}/boolean-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_111}}",
+                "boolean-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Value enum_1 - Родниковая",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_120}}/enum-values",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_120}}",
+                "enum-values"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Родниковая\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('enum_1', jsonData.id);",
+                  "pm.environment.set('enum_1', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Value enum_2 - Артезианская",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_120}}/enum-values",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_120}}",
+                "enum-values"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Артезианская\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('enum_2', jsonData.id);",
+                  "pm.environment.set('enum_2', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Value enum_10 - Стекло",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_121}}/enum-values",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_121}}",
+                "enum-values"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Стекло\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('enum_10', jsonData.id);",
+                  "pm.environment.set('enum_10', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Value enum_11 - ПЭТ",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/{{factor_121}}/enum-values",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "{{factor_121}}",
+                "enum-values"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"ПЭТ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const jsonData = pm.response.json();",
+                  "pm.expect(jsonData.id, 'response id').to.exist;",
+                  "pm.collectionVariables.set('enum_11', jsonData.id);",
+                  "pm.environment.set('enum_11', jsonData.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Rule enum_1 - Родниковая",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/enum-values/{{enum_1}}/enum-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "enum-values",
+                "{{enum_1}}",
+                "enum-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Rule enum_2 - Артезианская",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/enum-values/{{enum_2}}/enum-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "enum-values",
+                "{{enum_2}}",
+                "enum-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Rule enum_10 - Стекло",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/enum-values/{{enum_10}}/enum-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "enum-values",
+                "{{enum_10}}",
+                "enum-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Enum Rule enum_11 - ПЭТ",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/factors/enum-values/{{enum_11}}/enum-rules",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "factors",
+                "enum-values",
+                "{{enum_11}}",
+                "enum-rules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": {{water_category_id}},\n  \"impact\": -20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Create Brand - Северная Вершина",
       "request": {
         "method": "POST",
@@ -64,7 +3250,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Северная Вершина\",\"description\":\"Артезианская питьевая вода высшей категории, скважина 140 м\"}"
+          "raw": "{\n  \"name\": \"Северная Вершина {{$guid}}\",\n  \"description\": \"Артезианская питьевая вода высшей категории, скважина 140 м\"\n}"
         }
       },
       "event": [
@@ -95,7 +3281,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Горный Эталон\",\"description\":\"Горная питьевая вода высшей категории, природный источник\"}"
+          "raw": "{\n  \"name\": \"Горный Эталон {{$guid}}\",\n  \"description\": \"Горная питьевая вода высшей категории, природный источник\"\n}"
         }
       },
       "event": [
@@ -126,7 +3312,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Хрустальный Ключ\",\"description\":\"Артезианская вода высшей категории, сбалансированный состав\"}"
+          "raw": "{\n  \"name\": \"Хрустальный Ключ {{$guid}}\",\n  \"description\": \"Артезианская вода высшей категории, сбалансированный состав\"\n}"
         }
       },
       "event": [
@@ -157,7 +3343,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Ледниковая Линия\",\"description\":\"Горная вода высшей категории, мягкий сбалансированный вкус\"}"
+          "raw": "{\n  \"name\": \"Ледниковая Линия {{$guid}}\",\n  \"description\": \"Горная вода высшей категории, мягкий сбалансированный вкус\"\n}"
         }
       },
       "event": [
@@ -188,7 +3374,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Аква Баланс\",\"description\":\"Питьевая вода высшей категории с физиологически полноценным составом\"}"
+          "raw": "{\n  \"name\": \"Аква Баланс {{$guid}}\",\n  \"description\": \"Питьевая вода высшей категории с физиологически полноценным составом\"\n}"
         }
       },
       "event": [
@@ -219,7 +3405,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Чистая Высота\",\"description\":\"Горная вода высшей категории, природная фильтрация\"}"
+          "raw": "{\n  \"name\": \"Чистая Высота {{$guid}}\",\n  \"description\": \"Горная вода высшей категории, природная фильтрация\"\n}"
         }
       },
       "event": [
@@ -250,7 +3436,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Серебряный Родник\",\"description\":\"Артезианская вода высшей категории, стабильный минеральный профиль\"}"
+          "raw": "{\n  \"name\": \"Серебряный Родник {{$guid}}\",\n  \"description\": \"Артезианская вода высшей категории, стабильный минеральный профиль\"\n}"
         }
       },
       "event": [
@@ -281,7 +3467,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Живая Глубина\",\"description\":\"Артезианская вода высшей категории, глубокая скважина\"}"
+          "raw": "{\n  \"name\": \"Живая Глубина {{$guid}}\",\n  \"description\": \"Артезианская вода высшей категории, глубокая скважина\"\n}"
         }
       },
       "event": [
@@ -312,7 +3498,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Эко Плато\",\"description\":\"Природная питьевая вода высшей категории, экологически чистый район\"}"
+          "raw": "{\n  \"name\": \"Эко Плато {{$guid}}\",\n  \"description\": \"Природная питьевая вода высшей категории, экологически чистый район\"\n}"
         }
       },
       "event": [
@@ -343,7 +3529,7 @@
         "url": "{{base_url}}/products/brands",
         "body": {
           "mode": "raw",
-          "raw": "{\"name\":\"Реликт Источник\",\"description\":\"Артезианская вода высшей категории, природный защищенный горизонт\"}"
+          "raw": "{\n  \"name\": \"Реликт Источник {{$guid}}\",\n  \"description\": \"Артезианская вода высшей категории, природный защищенный горизонт\"\n}"
         }
       },
       "event": [
