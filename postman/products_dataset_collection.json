@@ -16,7 +16,37 @@
   "variable": [
     {
       "key": "base_url",
+      "value": "http://localhost:8084",
+      "type": "string"
+    },
+    {
+      "key": "keycloak_url",
       "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "auth_realm",
+      "value": "persea",
+      "type": "string"
+    },
+    {
+      "key": "auth_client_id",
+      "value": "postman-tests",
+      "type": "string"
+    },
+    {
+      "key": "auth_username",
+      "value": "test_admin",
+      "type": "string"
+    },
+    {
+      "key": "auth_password",
+      "value": "admin1234",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
       "type": "string"
     }
   ],
@@ -53,10 +83,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_1\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - Акваника id').to.exist;",
+              "pm.collectionVariables.set('brand_1', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -95,10 +125,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_2\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - Черноголовка id').to.exist;",
+              "pm.collectionVariables.set('brand_2', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -137,10 +167,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_3\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - BonAqua id').to.exist;",
+              "pm.collectionVariables.set('brand_3', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -179,10 +209,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_4\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - Архыз id').to.exist;",
+              "pm.collectionVariables.set('brand_4', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -221,10 +251,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_5\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - Акватонус id').to.exist;",
+              "pm.collectionVariables.set('brand_5', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -263,10 +293,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_6\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - Ассоль id').to.exist;",
+              "pm.collectionVariables.set('brand_6', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -305,10 +335,10 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Save brand id\", function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.collectionVariables.set(\"brand_7\", jsonData.id);",
-              "});"
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "const jsonData = pm.response.json();",
+              "pm.expect(jsonData.id, 'Create Brand - Моя Цена id').to.exist;",
+              "pm.collectionVariables.set('brand_7', jsonData.id);"
             ],
             "type": "text/javascript"
           }
@@ -337,10 +367,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Акваника Детская (Aquanika Kids)\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_1}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-artezianskaya-akvanika-detskaya-aquanika-kids/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 7.8\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 4.1\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 340.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 4.4\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 8.5\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 34,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.251\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.003\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 5.9\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 51.0\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 18.3\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.14\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.22\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 2\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Акваника Детская (Aquanika Kids)\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_1}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-artezianskaya-akvanika-detskaya-aquanika-kids/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 7.8\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 4.1\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 340.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 4.4\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 8.5\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_34}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.251\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.003\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 5.9\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 51.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 18.3\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.14\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.22\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - Черноголовская первой категории артезианская негазированная",
@@ -364,10 +405,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Черноголовская первой категории артезианская негазированная\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-chernogolovskaya-pervoy-kategorii-kachestva-artezianskaya-negazirovannaya-717f18/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 60.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 1.07\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 1.04\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 7.5\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 3.72\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 43.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.12\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 2\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Черноголовская первой категории артезианская негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-prirodnaya-chernogolovskaya-pervoy-kategorii-kachestva-artezianskaya-negazirovannaya-717f18/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 60.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 1.07\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 1.04\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 7.5\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.72\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 43.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.12\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - BonAqua питьевая негазированная",
@@ -391,10 +443,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"BonAqua питьевая негазированная\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_3}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-negazirovannaya-bonaqua/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 90.0\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 2.77\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 220.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 6.1\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 1.03\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 0.43\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 20.0\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 21.0\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 15.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.14\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 4\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"BonAqua питьевая негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_3}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-negazirovannaya-bonaqua/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 90.0\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 2.77\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 220.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 6.1\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 1.03\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.009\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.43\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 20.0\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 21.0\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 15.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.14\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_4}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - Архыз детская негазированная",
@@ -418,10 +481,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Архыз детская негазированная\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_4}},\n  \"imageURI\": \"https://rskrf.ru/goods/gornaya-prirodnaya-pitevaya-voda-dlya-detskogo-pitaniya-arkhyz-negazirovannaya-dlya-detey-starshe-3-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 3.5\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 7.7\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 240.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 9.5\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.123\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.005\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 1.94\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 29.9\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 13.1\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 159.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.17\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 1\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Архыз детская негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_4}},\n  \"imageURI\": \"https://rskrf.ru/goods/gornaya-prirodnaya-pitevaya-voda-dlya-detskogo-pitaniya-arkhyz-negazirovannaya-dlya-detey-starshe-3-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 3.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 7.7\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 2.6\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 240.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 9.5\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 1.0\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.123\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 1.94\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 29.9\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 13.1\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 159.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.11\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.17\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_1}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - Акватонус артезианская негазированная первой категории",
@@ -445,10 +519,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Акватонус артезианская негазированная первой категории\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_5}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-negazirovannaya-doochishchennaya-pervoy-kategorii-kachestva-akvatonus-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 13.7\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 46.0\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 1.6\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 206.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 7.2\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 20.9\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.126\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.008\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 2.52\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 25.3\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 3.78\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 70.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.18\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.28\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 2\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Акватонус артезианская негазированная первой категории\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_5}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-negazirovannaya-doochishchennaya-pervoy-kategorii-kachestva-akvatonus-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 2.0\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 13.7\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 46.0\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.6\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 206.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 7.2\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 20.9\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.126\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.008\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 2.52\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 25.3\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.78\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 70.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.18\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.28\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - Ассоль артезианская негазированная первой категории",
@@ -472,10 +557,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Ассоль артезианская негазированная первой категории\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_6}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-pervoy-kategorii-negazirovannaya-assol-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 73.0\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 8.7\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 1.95\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 223.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 0.24\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 26.7\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 7.4\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.15\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 2\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Ассоль артезианская негазированная первой категории\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_6}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-artezianskaya-pervoy-kategorii-negazirovannaya-assol-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 73.0\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 8.7\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.95\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 223.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.24\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.05\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.25\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 26.7\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 7.4\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 24.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.15\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - Моя Цена питьевая негазированная",
@@ -499,10 +595,21 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Моя Цена питьевая негазированная\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_7}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-piteva-moya-tsena-negazirovannaya/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 3.7\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 10.8\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 1.2\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 8.2\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 3.3\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.107\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.015\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 0.82\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 18.1\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 3.37\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.08\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": false\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 5\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Моя Цена питьевая негазированная\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_7}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-piteva-moya-tsena-negazirovannaya/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 0.5\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 3.7\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 10.8\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.2\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 134.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 8.2\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 3.3\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.107\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.015\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.82\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 18.1\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 3.37\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 85.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.08\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_5}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
     },
     {
       "name": "Create Product - Черноголовский источник негазированная Clever",
@@ -526,10 +633,86 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"Черноголовский источник негазированная Clever\",\n  \"categoryId\": 1,\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-chernogolovskiy-istochnik-negazirovannaya-clever-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": 1,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 2,\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": 3,\n      \"amount\": 1.7\n    },\n    {\n      \"factorId\": 5,\n      \"amount\": 1.4\n    },\n    {\n      \"factorId\": 6,\n      \"amount\": 6.2\n    },\n    {\n      \"factorId\": 9,\n      \"amount\": 1.39\n    },\n    {\n      \"factorId\": 10,\n      \"amount\": 330.0\n    },\n    {\n      \"factorId\": 29,\n      \"amount\": 57.0\n    },\n    {\n      \"factorId\": 31,\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": 32,\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": 35,\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": 39,\n      \"amount\": 0.249\n    },\n    {\n      \"factorId\": 40,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 42,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 44,\n      \"amount\": 0.7\n    },\n    {\n      \"factorId\": 45,\n      \"amount\": 18.4\n    },\n    {\n      \"factorId\": 46,\n      \"amount\": 5.63\n    },\n    {\n      \"factorId\": 47,\n      \"amount\": 238.0\n    },\n    {\n      \"factorId\": 48,\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": 64,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 65,\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": 66,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 67,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 68,\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": 69,\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": 77,\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": 78,\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": 90,\n      \"value\": true\n    },\n    {\n      \"factorId\": 91,\n      \"value\": true\n    },\n    {\n      \"factorId\": 92,\n      \"value\": true\n    },\n    {\n      \"factorId\": 93,\n      \"value\": true\n    },\n    {\n      \"factorId\": 94,\n      \"value\": true\n    },\n    {\n      \"factorId\": 95,\n      \"value\": false\n    },\n    {\n      \"factorId\": 96,\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": 97,\n      \"enumValueId\": 2\n    },\n    {\n      \"factorId\": 98,\n      \"enumValueId\": 7\n    }\n  ]\n}"
+          "raw": "{\n  \"name\": \"Черноголовский источник негазированная Clever\",\n  \"categoryId\": {{water_category_id}},\n  \"brandId\": {{brand_2}},\n  \"imageURI\": \"https://rskrf.ru/goods/voda-pitevaya-chernogolovskiy-istochnik-negazirovannaya-clever-/\",\n  \"numericFactors\": [\n    {\n      \"factorId\": {{factor_1}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_2}},\n      \"amount\": 0.0\n    },\n    {\n      \"factorId\": {{factor_3}},\n      \"amount\": 1.7\n    },\n    {\n      \"factorId\": {{factor_5}},\n      \"amount\": 1.4\n    },\n    {\n      \"factorId\": {{factor_6}},\n      \"amount\": 6.2\n    },\n    {\n      \"factorId\": {{factor_9}},\n      \"amount\": 1.39\n    },\n    {\n      \"factorId\": {{factor_10}},\n      \"amount\": 330.0\n    },\n    {\n      \"factorId\": {{factor_29}},\n      \"amount\": 57.0\n    },\n    {\n      \"factorId\": {{factor_31}},\n      \"amount\": 0.68\n    },\n    {\n      \"factorId\": {{factor_32}},\n      \"amount\": 0.0015\n    },\n    {\n      \"factorId\": {{factor_35}},\n      \"amount\": 0.001\n    },\n    {\n      \"factorId\": {{factor_39}},\n      \"amount\": 0.249\n    },\n    {\n      \"factorId\": {{factor_40}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_42}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_44}},\n      \"amount\": 0.7\n    },\n    {\n      \"factorId\": {{factor_45}},\n      \"amount\": 18.4\n    },\n    {\n      \"factorId\": {{factor_46}},\n      \"amount\": 5.63\n    },\n    {\n      \"factorId\": {{factor_47}},\n      \"amount\": 238.0\n    },\n    {\n      \"factorId\": {{factor_48}},\n      \"amount\": 10.0\n    },\n    {\n      \"factorId\": {{factor_64}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_65}},\n      \"amount\": 0.025\n    },\n    {\n      \"factorId\": {{factor_66}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_67}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_68}},\n      \"amount\": 0.0005\n    },\n    {\n      \"factorId\": {{factor_69}},\n      \"amount\": 0.0003\n    },\n    {\n      \"factorId\": {{factor_77}},\n      \"amount\": 0.1\n    },\n    {\n      \"factorId\": {{factor_78}},\n      \"amount\": 0.2\n    }\n  ],\n  \"booleanFactors\": [\n    {\n      \"factorId\": {{factor_100}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_101}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_107}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_108}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_109}},\n      \"value\": true\n    },\n    {\n      \"factorId\": {{factor_110}},\n      \"value\": false\n    },\n    {\n      \"factorId\": {{factor_111}},\n      \"value\": false\n    }\n  ],\n  \"enumFactors\": [\n    {\n      \"factorId\": {{factor_120}},\n      \"enumValueId\": {{enum_2}}\n    },\n    {\n      \"factorId\": {{factor_121}},\n      \"enumValueId\": {{enum_11}}\n    }\n  ]\n}"
         }
       },
-      "response": []
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const tokenLeewayMs = 60000;",
+          "function readVar(key, fallback) {",
+          "    return pm.environment.get(key) || pm.collectionVariables.get(key) || fallback;",
+          "}",
+          "function writeVar(key, value) {",
+          "    pm.collectionVariables.set(key, value);",
+          "    try { pm.environment.set(key, value); } catch (e) {}",
+          "}",
+          "function isTokenFresh(token) {",
+          "    if (!token) return false;",
+          "    try {",
+          "        const payloadPart = token.split('.')[1];",
+          "        if (!payloadPart) return false;",
+          "        const normalized = payloadPart.replace(/-/g, '+').replace(/_/g, '/');",
+          "        const padding = '='.repeat((4 - normalized.length % 4) % 4);",
+          "        const payload = JSON.parse(atob(normalized + padding));",
+          "        return payload.exp && payload.exp * 1000 > Date.now() + tokenLeewayMs;",
+          "    } catch (e) {",
+          "        return false;",
+          "    }",
+          "}",
+          "function useToken(token) {",
+          "    writeVar('token', token);",
+          "    pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + token });",
+          "}",
+          "const currentToken = readVar('token', '');",
+          "if (isTokenFresh(currentToken)) {",
+          "    useToken(currentToken);",
+          "} else {",
+          "    const keycloakUrl = readVar('keycloak_url', 'http://localhost:8080');",
+          "    const realm = readVar('auth_realm', 'persea');",
+          "    pm.sendRequest({",
+          "        url: keycloakUrl + '/realms/' + realm + '/protocol/openid-connect/token',",
+          "        method: 'POST',",
+          "        header: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+          "        body: {",
+          "            mode: 'urlencoded',",
+          "            urlencoded: [",
+          "                { key: 'grant_type', value: 'password' },",
+          "                { key: 'client_id', value: readVar('auth_client_id', 'postman-tests') },",
+          "                { key: 'username', value: readVar('auth_username', 'test_admin') },",
+          "                { key: 'password', value: readVar('auth_password', 'admin1234') },",
+          "                { key: 'scope', value: 'openid profile email' }",
+          "            ]",
+          "        }",
+          "    }, function (err, res) {",
+          "        if (err) throw new Error('Keycloak token request failed: ' + err);",
+          "        if (!res || res.code >= 400) {",
+          "            throw new Error('Keycloak token request failed: HTTP ' + (res && res.code) + ' ' + (res && res.text()));",
+          "        }",
+          "        const body = res.json();",
+          "        if (!body.access_token) throw new Error('Keycloak response does not contain access_token');",
+          "        useToken(body.access_token);",
+          "    });",
+          "}"
+        ]
+      }
     }
   ]
 }

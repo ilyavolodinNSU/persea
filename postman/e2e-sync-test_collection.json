@@ -44,6 +44,36 @@
       "key": "product_id",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "keycloak_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "auth_realm",
+      "value": "persea",
+      "type": "string"
+    },
+    {
+      "key": "auth_client_id",
+      "value": "postman-tests",
+      "type": "string"
+    },
+    {
+      "key": "auth_username",
+      "value": "test_admin",
+      "type": "string"
+    },
+    {
+      "key": "auth_password",
+      "value": "admin1234",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
@@ -84,8 +114,13 @@
             ],
             "url": {
               "raw": "{{product_url}}/products/categories",
-              "host": ["{{product_url}}"],
-              "path": ["products", "categories"]
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products",
+                "categories"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -126,8 +161,13 @@
             ],
             "url": {
               "raw": "{{product_url}}/products/brands",
-              "host": ["{{product_url}}"],
-              "path": ["products", "brands"]
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products",
+                "brands"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -171,8 +211,12 @@
             ],
             "url": {
               "raw": "{{product_url}}/products",
-              "host": ["{{product_url}}"],
-              "path": ["products"]
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products"
+              ]
             },
             "body": {
               "mode": "raw",
@@ -205,8 +249,13 @@
             "method": "GET",
             "url": {
               "raw": "{{product_url}}/products/{{product_id}}?include=FACTORS",
-              "host": ["{{product_url}}"],
-              "path": ["products", "{{product_id}}"],
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ],
               "query": [
                 {
                   "key": "include",
@@ -239,8 +288,14 @@
             "method": "GET",
             "url": {
               "raw": "{{user_url}}/users/me/viewed-products",
-              "host": ["{{user_url}}"],
-              "path": ["users", "me", "viewed-products"]
+              "host": [
+                "{{user_url}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "viewed-products"
+              ]
             }
           }
         },
@@ -265,8 +320,13 @@
             "header": [],
             "url": {
               "raw": "{{reco_url}}/recommendation/recalculate",
-              "host": ["{{reco_url}}"],
-              "path": ["recommendation", "recalculate"]
+              "host": [
+                "{{reco_url}}"
+              ],
+              "path": [
+                "recommendation",
+                "recalculate"
+              ]
             }
           }
         },
@@ -295,8 +355,14 @@
             "header": [],
             "url": {
               "raw": "{{reco_url}}/recommendation/feed/me",
-              "host": ["{{reco_url}}"],
-              "path": ["recommendation", "feed", "me"]
+              "host": [
+                "{{reco_url}}"
+              ],
+              "path": [
+                "recommendation",
+                "feed",
+                "me"
+              ]
             }
           }
         }
@@ -325,8 +391,15 @@
             "method": "POST",
             "url": {
               "raw": "{{user_url}}/users/me/favorites/{{product_id}}",
-              "host": ["{{user_url}}"],
-              "path": ["users", "me", "favorites", "{{product_id}}"]
+              "host": [
+                "{{user_url}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "favorites",
+                "{{product_id}}"
+              ]
             }
           }
         },
@@ -350,8 +423,13 @@
             "method": "POST",
             "url": {
               "raw": "{{reco_url}}/recommendation/recalculate",
-              "host": ["{{reco_url}}"],
-              "path": ["recommendation", "recalculate"]
+              "host": [
+                "{{reco_url}}"
+              ],
+              "path": [
+                "recommendation",
+                "recalculate"
+              ]
             }
           }
         },
@@ -379,8 +457,14 @@
             "method": "GET",
             "url": {
               "raw": "{{reco_url}}/recommendation/feed/me",
-              "host": ["{{reco_url}}"],
-              "path": ["recommendation", "feed", "me"]
+              "host": [
+                "{{reco_url}}"
+              ],
+              "path": [
+                "recommendation",
+                "feed",
+                "me"
+              ]
             }
           }
         }
@@ -409,8 +493,13 @@
             "method": "DELETE",
             "url": {
               "raw": "{{product_url}}/products/{{product_id}}",
-              "host": ["{{product_url}}"],
-              "path": ["products", "{{product_id}}"]
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ]
             }
           }
         },
@@ -437,8 +526,14 @@
             "method": "GET",
             "url": {
               "raw": "{{user_url}}/users/me/viewed-products",
-              "host": ["{{user_url}}"],
-              "path": ["users", "me", "viewed-products"]
+              "host": [
+                "{{user_url}}"
+              ],
+              "path": [
+                "users",
+                "me",
+                "viewed-products"
+              ]
             }
           }
         },
@@ -459,8 +554,14 @@
             "method": "DELETE",
             "url": {
               "raw": "{{product_url}}/products/brands/{{brand_id}}",
-              "host": ["{{product_url}}"],
-              "path": ["products", "brands", "{{brand_id}}"]
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products",
+                "brands",
+                "{{brand_id}}"
+              ]
             }
           }
         },
@@ -481,12 +582,83 @@
             "method": "DELETE",
             "url": {
               "raw": "{{product_url}}/products/categories/{{cat_id}}",
-              "host": ["{{product_url}}"],
-              "path": ["products", "categories", "{{cat_id}}"]
+              "host": [
+                "{{product_url}}"
+              ],
+              "path": [
+                "products",
+                "categories",
+                "{{cat_id}}"
+              ]
             }
           }
         }
       ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const tokenLeewayMs = 60000;",
+          "function readVar(key, fallback) {",
+          "    return pm.environment.get(key) || pm.collectionVariables.get(key) || fallback;",
+          "}",
+          "function writeVar(key, value) {",
+          "    pm.collectionVariables.set(key, value);",
+          "    try { pm.environment.set(key, value); } catch (e) {}",
+          "}",
+          "function isTokenFresh(token) {",
+          "    if (!token) return false;",
+          "    try {",
+          "        const payloadPart = token.split('.')[1];",
+          "        if (!payloadPart) return false;",
+          "        const normalized = payloadPart.replace(/-/g, '+').replace(/_/g, '/');",
+          "        const padding = '='.repeat((4 - normalized.length % 4) % 4);",
+          "        const payload = JSON.parse(atob(normalized + padding));",
+          "        return payload.exp && payload.exp * 1000 > Date.now() + tokenLeewayMs;",
+          "    } catch (e) {",
+          "        return false;",
+          "    }",
+          "}",
+          "function useToken(token) {",
+          "    writeVar('token', token);",
+          "    pm.request.headers.upsert({ key: 'Authorization', value: 'Bearer ' + token });",
+          "}",
+          "const currentToken = readVar('token', '');",
+          "if (isTokenFresh(currentToken)) {",
+          "    useToken(currentToken);",
+          "} else {",
+          "    const keycloakUrl = readVar('keycloak_url', 'http://localhost:8080');",
+          "    const realm = readVar('auth_realm', 'persea');",
+          "    pm.sendRequest({",
+          "        url: keycloakUrl + '/realms/' + realm + '/protocol/openid-connect/token',",
+          "        method: 'POST',",
+          "        header: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+          "        body: {",
+          "            mode: 'urlencoded',",
+          "            urlencoded: [",
+          "                { key: 'grant_type', value: 'password' },",
+          "                { key: 'client_id', value: readVar('auth_client_id', 'postman-tests') },",
+          "                { key: 'username', value: readVar('auth_username', 'test_admin') },",
+          "                { key: 'password', value: readVar('auth_password', 'admin1234') },",
+          "                { key: 'scope', value: 'openid profile email' }",
+          "            ]",
+          "        }",
+          "    }, function (err, res) {",
+          "        if (err) throw new Error('Keycloak token request failed: ' + err);",
+          "        if (!res || res.code >= 400) {",
+          "            throw new Error('Keycloak token request failed: HTTP ' + (res && res.code) + ' ' + (res && res.text()));",
+          "        }",
+          "        const body = res.json();",
+          "        if (!body.access_token) throw new Error('Keycloak response does not contain access_token');",
+          "        useToken(body.access_token);",
+          "    });",
+          "}"
+        ]
+      }
     }
   ]
 }

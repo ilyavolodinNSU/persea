@@ -68,6 +68,17 @@
         "use.refresh.tokens": "true",
         "post.logout.redirect.uris": "+"
       }
+    },
+    {
+      "clientId": "postman-tests",
+      "name": "Postman Test Runner",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "protocol": "openid-connect"
     }
   ],
 
